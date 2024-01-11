@@ -7,7 +7,7 @@ const Talk = () => {
 		<div>
 
 			{/* Image */}
-			<div className='h-[20vh] sm:h-[40vh] relative rounded-lg border-2 container'>
+			<div className='h-[15vh] sm:h-[30vh] relative rounded-lg border-2 container'>
 				<Image
 					src="https://64.media.tumblr.com/6cb0ae44278156aa660d95d55df340de/tumblr_nz14o7t0Z61skcd7fo1_500.gifv"
           alt="talk"

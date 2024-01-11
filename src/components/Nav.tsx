@@ -17,17 +17,17 @@ import {
 
 export const Nav = () => {
 	return (
-		<nav className="flex justify-between items-center py-5 container px-10">
+		<nav className="flex justify-between items-center pt-5 pb-3 container">
 			{/* -- Logo -- */}
 			<div>
 				<Link href={"/"}>
-					<span className="text-3xl font-bold">Calmversation</span>
+					<span className="text-3xl font-semibold">Calmversation</span>
 				</Link>
 			</div>
 
 			{/* -- Auth -- */}
 			<Link href="/talk">
-				<Button className="text-lg  w-full px-10">Chat Now</Button>
+				<Button className="sm:text-lg  w-full sm:px-10">Chat Now</Button>
 			</Link>
 		</nav>
 	);
