@@ -63,6 +63,7 @@ export const Nav = () => {
 				<Link href="/talk">
 					<Button className="text-lg  w-full px-10">Chat Now</Button>
 				</Link>
+			)}
 
 		</nav>
 	);
