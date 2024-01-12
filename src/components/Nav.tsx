@@ -21,7 +21,7 @@ export const Nav = () => {
 	console.log(path);
 
 	return (
-		<nav className="flex justify-between items-center py-5 container px-10">
+		<nav className="flex justify-between items-center pt-5 pb-3 container">
 			{/* -- Logo -- */}
 			<div>
 				{path == "/talk" ? (
@@ -63,7 +63,7 @@ export const Nav = () => {
 				<Link href="/talk">
 					<Button className="text-lg  w-full px-10">Chat Now</Button>
 				</Link>
-			)}
+
 		</nav>
 	);
 };

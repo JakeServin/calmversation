@@ -22,11 +22,11 @@ const Hero = () => {
 		>
 			{/* Left */}
 			<div className="md:w-1/2 py-60">
-				<h1 className="text-7xl font-bold w-3/4 md:w-full lg:text-8xl ">
+				<h1 className="text-7xl font-bold sm:w-3/4 lg:text-8xl ">
 					Let's talk about it.
 				</h1>
 				<div className="mt-8 w-3/2 text-lg text-gray-700">
-					A safe space to express, reflect, and grow. We’re here to
+					A safe space to express, reflect, and grow. I'm here to
 					listen and support, whenever you need it.
 				</div>
 
