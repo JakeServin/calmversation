@@ -61,10 +61,11 @@ export const Nav = () => {
 			{/* -- Auth -- */}
 			{path != "/talk" && (
 				<Link href="/talk">
-					<Button className="text-lg  w-full px-10">Chat Now</Button>
+					<Button className="text-lg sm:text-lg  w-full sm:px-10">
+						Chat Now
+					</Button>
 				</Link>
 			)}
-
 		</nav>
 	);
 };

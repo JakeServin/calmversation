@@ -21,7 +21,7 @@ const Hero = () => {
 			}`}
 		>
 			{/* Left */}
-			<div className="md:w-1/2 py-60">
+			<div className="sm:ml-5 md:w-1/2 sm:py-60">
 				<h1 className="text-7xl font-bold sm:w-3/4 lg:text-8xl ">
 					Let's talk about it.
 				</h1>
@@ -34,7 +34,7 @@ const Hero = () => {
 					<Link href="/talk">
 						<Button
 							variant={"outline"}
-							className="text-xl px-10 py-5 font-medium border-primary text-primary hover:bg-amber-50 hover:text-primary"
+							className="text-xl px-10 py-5 font-semibold border-primary text-primary hover:bg-amber-50 hover:text-primary"
 						>
 							{" "}
 							Chat Now{" "}
