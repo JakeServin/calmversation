@@ -64,7 +64,7 @@ console.log(typedContent)
 				</div>
 
 				{/* Message Content */}
-				<div className="text-gray-600 mb-2">{name == "Aura" ? typedContent : content}</div>
+				<div className="text-gray-600 mb-2 last:mb-0 text-sm">{name == "Aura" ? typedContent : content}</div>
 			</div>
 		</div>
 	);

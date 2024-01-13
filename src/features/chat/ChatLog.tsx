@@ -28,7 +28,7 @@ const ChatLog = ({ messages }: ChatLogProps) => {
 	return (
 		<div
 			id="chat_log"
-			className="container mt-5 min-h-40 max-h-72 overflow-scroll scroll-smooth"
+			className="container mt-5 min-h-80 sm:min-h-48 max-h-[68vh] sm:max-h-80 overflow-scroll scroll-smooth"
 			ref={chatLogRef}
 		>
 			{messages.map((message, index) => (
