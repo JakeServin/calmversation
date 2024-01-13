@@ -1,23 +1,51 @@
 "use client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useEffect, useState } from "react";
 
 type AiMessageProps = {
 	time: string;
-	messages: string[];
+	content: string;
 	name: string;
 	avatarImage?: string;
 	avatarFallback: string;
 };
 
-const Message = ({ time, messages, avatarImage, avatarFallback, name }: AiMessageProps) => {
+const Message = ({
+	time,
+	content,
+	avatarImage,
+	avatarFallback,
+	name,
+}: AiMessageProps) => {
+
+	const [typedContent, setTypedContent] = useState("");
+	const typingSpeedMs = 70; // Adjust typing speed as needed
+
+	useEffect(() => {
+		let charIndex = 0;
+
+		const typingInterval = setInterval(() => {
+			if (charIndex < content.length) {
+				setTypedContent(
+					content.substring(0, charIndex + 1)
+				);
+				charIndex++;
+			} else {
+				clearInterval(typingInterval);
+			}
+		}, typingSpeedMs);
+
+		// Cleanup interval on component unmount
+		return () => clearInterval(typingInterval);
+	}, [content, typingSpeedMs]);
+
+console.log(typedContent)
+
 	return (
 		<div className="flex mb-2">
 			{/* Avatar */}
 			<Avatar>
-				<AvatarImage
-					src={avatarImage}
-					alt="avatar image"
-				/>
+				<AvatarImage src={avatarImage} alt="avatar image" />
 				<AvatarFallback>{avatarFallback}</AvatarFallback>
 			</Avatar>
 
@@ -32,10 +60,7 @@ const Message = ({ time, messages, avatarImage, avatarFallback, name }: AiMessag
 				</div>
 
 				{/* Message Content */}
-
-				{messages.map((message) => {
-					return <div className="text-gray-600 mb-2">{message}</div>;
-				})}
+				<div className="text-gray-600 mb-2">{name == "Aura" ? typedContent : content}</div>
 			</div>
 		</div>
 	);

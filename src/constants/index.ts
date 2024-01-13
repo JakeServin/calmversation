@@ -14,3 +14,11 @@ export const SOCIALS = [
 		href: "https://jakeservin.dev",
 	},
 ];
+
+export const CHAT_CONFIG = {
+	model: "gpt-4",
+	temperature: 0.7,
+	max_tokens: 256,
+	top_p: 0.9,
+	frequency_penalty: 0.25,
+	presence_penalty: 0.25};
