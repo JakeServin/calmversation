@@ -15,13 +15,27 @@ const Footer = () => {
 
 				{/* Socials */}
 				<div className="mt-5 text-sm">
-					<div>Made with care by @JakeServin</div>
-          <div className="flex gap-3 mt-2">
-            {SOCIALS.map((social, index) => (
-              <a href={social.href} target='_blank' key={index}>
-                <Image src={social.src} alt={social.alt} width={25} height={25} />
-              </a>
-            ))}
+					<div>
+						Made with care by
+						<a
+							target="_window"
+							href={"https://github.com/JakeServin"}
+						>
+							{" "}
+							@JakeServin{" "}
+						</a>
+					</div>
+					<div className="flex gap-3 mt-2">
+						{SOCIALS.map((social, index) => (
+							<a href={social.href} target="_blank" key={index}>
+								<Image
+									src={social.src}
+									alt={social.alt}
+									width={25}
+									height={25}
+								/>
+							</a>
+						))}
 					</div>
 				</div>
 			</div>

@@ -17,8 +17,10 @@ type ChatLogProps = {
 const ChatLog = ({messages}: ChatLogProps) => {
 
 	return (
-		<div className="container mt-5 min-h-40 max-h-72  overflow-scroll">
-
+		<div
+			id="chat_log"
+			className="container mt-5 min-h-40 max-h-72 overflow-scroll scroll-smooth"
+		>
 			{messages.map((message, index) => (
 				<Message
 					key={index}
