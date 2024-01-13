@@ -1,6 +1,9 @@
 import { SOCIALS } from '@/constants';
+import { Lora } from 'next/font/google';
 import Image from 'next/image'
 import React from 'react'
+
+const lora = Lora({ subsets: ['latin'] })
 
 const Footer = () => {
   return (
@@ -8,7 +11,7 @@ const Footer = () => {
 			<div>
 				<div className={"border-blue-500"}>
 					<div className="text-xl font-bold">Calmversation</div>
-					<div className="text-sm text-gray-700">
+					<div className={`text-sm text-gray-700 ${lora.className}`}>
 						A simple tool to prioritze your well-being
 					</div>
 				</div>

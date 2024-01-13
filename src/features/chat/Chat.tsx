@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import useChat from "@/hooks/useChat";
+import { Open_Sans } from "next/font/google";
 
 interface Message {
 	name: string;
@@ -13,6 +14,8 @@ interface Message {
 	content: string;
 	time: string;
 }
+
+const openSans = Open_Sans({ subsets: ["latin"], weight: ['300', '400', '500', '700'] });
 
 const Chat = () => {
 	const [fade, setFade] = useState(true);
@@ -50,7 +53,7 @@ const Chat = () => {
 				<Button
 					className={`${
 						!isExpanded ? "opacity-0" : "opacity-100"
-					} transition-all duration-200 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl px-10 py-8`}
+					} transition-all duration-200 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl px-10 py-8 font-semibold`}
 					onClick={handleButtonClick}
 				>
 					Let&apos;s Talk
@@ -63,9 +66,9 @@ const Chat = () => {
 					<ChatLog messages={messages} />
 
 					{/* Chat Input */}
-					<div className="my-5 h-fill">
+					<div className={`my-5 h-fill ${openSans.className} px-4`}>
 						<Textarea
-							className="container p-5"
+							className={`container p-5`}
 							placeholder="Type your message here"
 							value={input}
 							onChange={(e) => setInput(e.target.value)}

@@ -6,6 +6,7 @@ import Footer from '@/components/Footer'
 import Head from 'next/head'
 
 const inter = Inter({ subsets: ['latin'] })
+const montserrat = Montserrat({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Calmversation',
@@ -19,7 +20,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={montserrat.className}>
         <Nav />
         <main>
           {children}

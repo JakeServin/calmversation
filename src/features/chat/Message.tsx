@@ -1,5 +1,6 @@
 "use client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Open_Sans, Roboto } from "next/font/google";
 import { useEffect, useState } from "react";
 
 type AiMessageProps = {
@@ -9,6 +10,9 @@ type AiMessageProps = {
 	avatarImage?: string;
 	avatarFallback: string;
 };
+
+const roboto = Roboto({ subsets: ["latin"], weight: ['100', '300', '400', '500', '700', '900'] });
+const openSans = Open_Sans({ subsets: ["latin"], weight: ['300', '400', '500', '700'] });
 
 const Message = ({
 	time,
@@ -42,7 +46,7 @@ const Message = ({
 console.log(typedContent)
 
 	return (
-		<div className="flex mb-2">
+		<div className={`flex mb-2 ${openSans.className}`}>
 			{/* Avatar */}
 			<Avatar>
 				<AvatarImage src={avatarImage} alt="avatar image" />
