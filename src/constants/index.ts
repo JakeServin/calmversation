@@ -5,7 +5,7 @@ export const SOCIALS = [
 		alt: "github",
 		href: "https://github.com/JakeServin",
 	}, {
-		src: "/images/linkedIn.svg",
+		src: "/images/linkedin.svg",
 		alt: "linkedin",
 		href: "https://www.linkedin.com/in/jakeservin/",
 	}, {
