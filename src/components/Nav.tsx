@@ -34,10 +34,10 @@ export const Nav = () => {
 						<AlertDialogContent>
 							<AlertDialogHeader>
 								<AlertDialogTitle>
-									Hold on! You've got an ongoing chat.
+									Hold on! You&apos;ve got an ongoing chat.
 								</AlertDialogTitle>
 								<AlertDialogDescription>
-									If you leave now, you'll exit the
+									If you leave now, you&apos;ll exit the
 									conversation. Are you sure you want go?
 								</AlertDialogDescription>
 							</AlertDialogHeader>
