@@ -36,3 +36,7 @@
 // };
 
 // export default TypingAnimation;
+
+export const convertApostrophe = (str: string) => {
+  return str.replace(/'/g, "&#39;");
+}

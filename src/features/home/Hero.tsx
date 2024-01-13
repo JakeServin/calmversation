@@ -27,12 +27,12 @@ const Hero = () => {
 				{/* Left */}
 				<div className="sm:ml-5 w-full md:w-1/2 sm:py-60">
 					<h1 className={`text-7xl font-bold sm:w-3/4 lg:text-8xl`}>
-						Let's talk about it.
+						Let&apos;s talk about it.
 					</h1>
 					<div
 						className={`mt-8 w-3/2 text-lg text-gray-700 ${lora.className}`}
 					>
-						A safe space to express, reflect, and grow. I'm here to
+						A safe space to express, reflect, and grow. I&apos;m here to
 						listen and support, whenever you need it.
 					</div>
 
