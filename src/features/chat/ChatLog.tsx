@@ -18,6 +18,12 @@ const ChatLog = ({ messages }: ChatLogProps) => {
 
 	const chatLogRef = useRef<HTMLDivElement>(null);
 
+	const scrollToBottom = () => {
+		if (chatLogRef.current) {
+			chatLogRef.current.scrollTop = chatLogRef.current.scrollHeight;
+		}
+	};
+
 	useEffect(() => {
 		// Scroll to the bottom of the chat log whenever the messages change
 		if (chatLogRef.current) {
@@ -33,6 +39,7 @@ const ChatLog = ({ messages }: ChatLogProps) => {
 		>
 			{messages.map((message, index) => (
 				<Message
+					onNewLine={scrollToBottom}
 					key={"message" + index}
 					name={message.name}
 					avatarFallback={message.avatarFallback}

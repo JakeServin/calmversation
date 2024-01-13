@@ -94,7 +94,6 @@ const useChat = () => {
 			content: input,
 		});
 
-		console.log(messagesCopy);
 		setResponding(true);
 		const response = await fetch("/api/openai/get_response", {
 			method: "POST",

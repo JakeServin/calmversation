@@ -9,6 +9,7 @@ type AiMessageProps = {
 	name: string;
 	avatarImage?: string;
 	avatarFallback: string;
+	onNewLine: () => void;
 };
 
 const roboto = Roboto({ subsets: ["latin"], weight: ['100', '300', '400', '500', '700', '900'] });
@@ -20,6 +21,7 @@ const Message = ({
 	avatarImage,
 	avatarFallback,
 	name,
+	onNewLine
 }: AiMessageProps) => {
 
 	const [typedContent, setTypedContent] = useState("");
@@ -43,7 +45,10 @@ const Message = ({
 		return () => clearInterval(typingInterval);
 	}, [content, typingSpeedMs]);
 
-console.log(typedContent)
+	useEffect(() => {
+		// Scroll to the bottom of the chat log whenever the messages change
+		onNewLine();
+	}, [typedContent]);
 
 	return (
 		<div className={`flex mb-2 ${openSans.className}`}>

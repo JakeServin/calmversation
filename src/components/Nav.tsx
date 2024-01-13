@@ -18,8 +18,6 @@ import { usePathname } from "next/navigation";
 export const Nav = () => {
 	const path = usePathname();
 
-	console.log(path);
-
 	return (
 		<nav className="flex justify-between items-center pt-5 pb-3 container">
 			{/* -- Logo -- */}
