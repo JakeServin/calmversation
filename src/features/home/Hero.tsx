@@ -7,7 +7,6 @@ import React, { useEffect, useState } from "react";
 
 const lora = Lora({ subsets: ['latin'] })
 
-
 const Hero = () => {
 
 	const [fade, setFade] = useState(true);
