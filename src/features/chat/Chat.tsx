@@ -68,10 +68,16 @@ const Chat = () => {
 					{/* Chat Input */}
 					<div className={`my-5 h-fill ${openSans.className} px-4`}>
 						<Textarea
-							className={`container p-5`}
+							className={`container p-5 text-base`}
 							placeholder="Type your message here"
 							value={input}
 							onChange={(e) => setInput(e.target.value)}
+							onKeyDown={(e) => {
+								if (e.key === "Enter" && !e.shiftKey) {
+									e.preventDefault(); // Prevents the default action of entering a new line
+									if(input) handleSend();
+								}
+							}}
 						/>
 						<div className="container flex justify-end mt-4 pr-0 ">
 							<Button disabled={responding} onClick={handleSend}>
