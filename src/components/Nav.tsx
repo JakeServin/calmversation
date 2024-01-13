@@ -44,7 +44,9 @@ export const Nav = () => {
 							<AlertDialogFooter>
 								<AlertDialogCancel>Cancel</AlertDialogCancel>
 								<Link href={"/"}>
-									<AlertDialogAction>Quit</AlertDialogAction>
+									<AlertDialogAction className="w-full">
+										Quit
+									</AlertDialogAction>
 								</Link>
 							</AlertDialogFooter>
 						</AlertDialogContent>
