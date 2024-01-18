@@ -1,36 +1,23 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Calmversation
 
-## Getting Started
+Calmversation is an AI-powered chat application designed to provide emotional support and mental wellness guidance. It aims to make therapeutic conversation accessible to everyone, leveraging advanced AI technology to offer a safe and private space for users to express and understand their feelings.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **AI-Powered Chat**: Engage in meaningful conversations with Aura, an empathetic AI trained in therapeutic communication techniques.
+- **Privacy-Focused**: Ensures user conversations are handled with utmost confidentiality and security.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Technologies Used
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+This project is built using a range of modern technologies to ensure efficiency, scalability, and user-friendly experience:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- **Frontend**: React.js/Next.js for a dynamic and responsive user interface.
+- **Backend**: Node.js with Next.js for efficient server-side handling.
+- **AI Integration**: Integration with OpenAI's GPT-4 for natural language processing and conversation generation.
+- **Deployment**: Deployed on Vercel for reliable and scalable cloud hosting.
 
-## Learn More
+## Goal of the Application
 
-To learn more about Next.js, take a look at the following resources:
+The primary goal of Calmversation is to provide a digital space where individuals can find comfort and guidance in their mental wellness journey. By leveraging AI, the app aims to offer a personalized and responsive chatting experience, making mental health support more accessible to everyone, regardless of their geographical location or financial status.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
