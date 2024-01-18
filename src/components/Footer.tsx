@@ -7,8 +7,8 @@ const lora = Lora({ subsets: ['latin'] })
 
 const Footer = () => {
   return (
-		<footer className="container flex justify-between py-10 bg-slate-100">
-			<div>
+		<footer className="flex justify-between py-10 bg-slate-100">
+			<div className='container'>
 				<div className={"border-blue-500"}>
 					<div className="text-xl font-bold">Calmversation</div>
 					<div className={`text-sm text-gray-700 ${lora.className}`}>

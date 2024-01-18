@@ -61,34 +61,36 @@ const Hero = () => {
 			</div>
 
 			{/* App Description */}
-			<div className="container bg-amber-100 p-8 md:p-16">
-				<h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-6">
-					Empower Your Well-being With Every Conversation
-				</h2>
-				<p
-					className={`text-md md:text-lg text-gray-700 mb-4 ${lora.className}`}
-				>
-					In a world that moves fast, finding a moment for yourself
-					can be challenging. Calmversation is here to change that. At
-					the heart of our mission is a simple belief: everyone
-					deserves a space to reflect, speak freely, and be heard.
-				</p>
-				<p
-					className={`text-md md:text-lg text-gray-700 mb-4 ${lora.className}`}
-				>
-					Our AI-powered companion, Aura, is a friendly voice that’s
-					ready to listen to you 24/7. Whether you need to unwind
-					after a long day, navigate complex feelings, or simply share
-					your thoughts, Calmversation offers a safe and private
-					environment to do just that. Engage in meaningful dialogue
-					and discover insights that can help you grow.
-				</p>
-				<p
-					className={`text-md md:text-lg text-gray-700 ${lora.className}`}
-				>
-					With Calmversation, every interaction is a step toward a
-					more balanced and fulfilled you.
-				</p>
+			<div className="bg-amber-100 p-8 md:p-16">
+				<div className="container">
+					<h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-6">
+						Empower Your Well-being With Every Conversation
+					</h2>
+					<p
+						className={`text-md md:text-lg text-gray-700 mb-4 ${lora.className}`}
+					>
+						In a world that moves fast, finding a moment for yourself
+						can be challenging. Calmversation is here to change that. At
+						the heart of our mission is a simple belief: everyone
+						deserves a space to reflect, speak freely, and be heard.
+					</p>
+					<p
+						className={`text-md md:text-lg text-gray-700 mb-4 ${lora.className}`}
+					>
+						Our AI-powered companion, Aura, is a friendly voice that’s
+						ready to listen to you 24/7. Whether you need to unwind
+						after a long day, navigate complex feelings, or simply share
+						your thoughts, Calmversation offers a safe and private
+						environment to do just that. Engage in meaningful dialogue
+						and discover insights that can help you grow.
+					</p>
+					<p
+						className={`text-md md:text-lg text-gray-700 ${lora.className}`}
+					>
+						With Calmversation, every interaction is a step toward a
+						more balanced and fulfilled you.
+					</p>
+				</div>
 			</div>
 		</section>
 	);
