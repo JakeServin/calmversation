@@ -12,7 +12,7 @@ export const SOCIALS = [
 		src: "/images/globe.svg",
 		alt: "website",
 		href: "https://jakeservin.dev",
-	},
+	}, 
 ];
 
 export const CHAT_CONFIG = {
