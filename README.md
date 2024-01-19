@@ -1,4 +1,4 @@
-# Calmversation
+# <a href="https://calmversation.vercel.app" target="_blank">Calmversation</a>
 
 Calmversation is an AI-powered chat application designed to provide emotional support and mental wellness guidance. It aims to make therapeutic conversation accessible to everyone, leveraging advanced AI technology to offer a safe and private space for users to express and understand their feelings.
 
@@ -19,5 +19,7 @@ This project is built using a range of modern technologies to ensure efficiency,
 ## Goal of the Application
 
 The primary goal of Calmversation is to provide a digital space where individuals can find comfort and guidance in their mental wellness journey. By leveraging AI, the app aims to offer a personalized and responsive chatting experience, making mental health support more accessible to everyone, regardless of their geographical location or financial status.
+
+
 
 
