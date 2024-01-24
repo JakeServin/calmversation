@@ -13,6 +13,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { useStore } from "@/store";
+import Image from "next/image";
 
 const LogIn = () => {
   const supabase = createClientComponentClient();
@@ -56,7 +57,21 @@ const LogIn = () => {
       description: 'You are now logged in.'
     })
     router.push('/talk')
-	}
+  }
+  
+  async function handleGoogleSignIn() {
+		const { data, error } = await supabase.auth.signInWithOAuth({
+			provider: "google",
+			options: {
+				queryParams: {
+					access_type: "offline",
+					prompt: "consent",
+				},
+			},
+		});
+
+		if (error) console.error("Login error", error);
+  }
 
 	return (
 		<div className="flex justify-center">
@@ -145,13 +160,23 @@ const LogIn = () => {
 					</div>
 				</div>
 
-				<div className="w-full ">
-					<div className="bg-blue-500 text-white text-center rounded-full py-3 text-xs">
-						Continue with Google
-					</div>
-				</div>
-				<Separator className="my-4" />
 				{/* OAUTH */}
+				<div className="w-full ">
+					<Button
+						onClick={handleGoogleSignIn}
+						className="bg-blue-500 text-white text-center rounded-full py-2 text-xs flex justify-center items-center gap-2 w-full hover:bg-blue-400"
+					>
+						<div className="bg-white rounded-full p-1">
+							<Image
+								src="/images/google.svg"
+								alt="google"
+								width={20}
+								height={20}
+							/>
+						</div>
+						Continue with Google
+					</Button>
+				</div>
 
 				<div className="my-5">
 					<p className="text-xs text-gray-500">

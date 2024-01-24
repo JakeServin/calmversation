@@ -21,6 +21,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useToast } from "@/components/ui/use-toast";
 import { set } from "date-fns";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const formSchema = z
 	.object({
@@ -38,10 +39,10 @@ const formSchema = z
 	});
 
 const SignUp = () => {
-  const router = useRouter();
+	const router = useRouter();
 	const supabase = createClientComponentClient();
-  const { toast } = useToast();
-  const [loading, setLoading] = useState(false)
+	const { toast } = useToast();
+	const [loading, setLoading] = useState(false);
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -54,25 +55,25 @@ const SignUp = () => {
 	});
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
-    const { name, email, password } = values;
-    
-    // Verify user doesn't already exist
-    const { data: user } = await supabase
-      .from("Profiles")
-      .select("*")
+		const { name, email, password } = values;
+
+		// Verify user doesn't already exist
+		const { data: user } = await supabase
+			.from("Profiles")
+			.select("*")
       .eq("email", email);
 
-    if (user?.length) {
-      toast({
-        variant: "destructive",
-        title: "Uh oh! Something went wrong.",
-        description: "A user with that email already exists.",
-      });
-      return;
-    }
+		if (user?.length) {
+			toast({
+				variant: "destructive",
+				title: "Uh oh! Something went wrong.",
+				description: "A user with that email already exists.",
+			});
+			return;
+		}
 
-    // Create user
-    setLoading(true)
+		// Create user
+		setLoading(true);
 		const { data, error } = await supabase.auth.signUp({
 			email,
 			password,
@@ -80,41 +81,61 @@ const SignUp = () => {
 				emailRedirectTo: "localhost:3000/auth/signin",
 			},
 		});
-    setLoading(false)
+		setLoading(false);
 
 		if (error) {
 			toast({
 				variant: "destructive",
 				title: "Uh oh! Something went wrong.",
 				description: error.message,
-      });
-      
-      return;
-    }
-    
-    // Create profile
-    const { error: profileError } = await supabase
-      .from("Profiles")
-      .insert([{ displayName: name, email, id: data?.user?.id, createdAt: new Date() }]);
-    
-    if (profileError) {
-      toast({
-        variant: "destructive",
-        title: "Uh oh! Something went wrong.",
-        description: profileError.message,
-      });
+			});
 
-      return;
-    }
+			return;
+		}
 
-    toast({
-      title: "Success!",
-      description: "Account created",
-    })
+		// Create profile
+		const { error: profileError } = await supabase
+			.from("Profiles")
+			.insert([
+				{
+					displayName: name,
+					email,
+					id: data?.user?.id,
+					createdAt: new Date(),
+				},
+			]);
 
-    // Redirect to dashboard
-    router.push("/auth/signup/success");
+		if (profileError) {
+			toast({
+				variant: "destructive",
+				title: "Uh oh! Something went wrong.",
+				description: profileError.message,
+			});
 
+			return;
+		}
+
+		toast({
+			title: "Success!",
+			description: "Account created",
+		});
+
+		// Redirect to dashboard
+		router.push("/auth/signup/success");
+	}
+
+  async function handleGoogleSignIn() {
+		const { data, error } = await supabase.auth.signInWithOAuth({
+			provider: "google",
+			options: {
+				queryParams: {
+					access_type: "offline",
+					prompt: "consent",
+				},
+			},
+		});
+
+		if (error) console.error("Login error", error);
 	}
 
 	return (
@@ -131,9 +152,20 @@ const SignUp = () => {
 
 				{/* OAUTH */}
 				<div className="w-full ">
-					<div className="bg-blue-500 text-white text-center rounded-full py-3 text-xs">
+					<Button
+						onClick={handleGoogleSignIn}
+						className="bg-blue-500 text-white text-center rounded-full py-2 text-xs flex justify-center items-center gap-2 w-full hover:bg-blue-400"
+					>
+						<div className="bg-white rounded-full p-1">
+							<Image
+								src="/images/google.svg"
+								alt="google"
+								width={20}
+								height={20}
+							/>
+						</div>
 						Continue with Google
-					</div>
+					</Button>
 				</div>
 
 				<div className="flex w-full items-center my-1">
