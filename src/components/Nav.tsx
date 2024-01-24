@@ -161,7 +161,7 @@ export const Nav = () => {
 				</>
 			) : (
 				<Button
-					className="text-lg sm:text-lg  w-full sm:px-10 font-semibold rounded-full "
+					className="text-lg sm:text-lg sm:px-10 font-semibold rounded-full "
 					onClick={handleSignOut}
 				>
 					Sign out

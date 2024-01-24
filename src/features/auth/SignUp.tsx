@@ -79,6 +79,9 @@ const SignUp = () => {
 			password,
 			options: {
 				emailRedirectTo: "localhost:3000/auth/signin",
+				data: {
+					name,
+				},
 			},
 		});
 		setLoading(false);
@@ -91,37 +94,16 @@ const SignUp = () => {
 			});
 
 			return;
-		}
-
-		// Create profile
-		const { error: profileError } = await supabase
-			.from("Profiles")
-			.insert([
-				{
-					displayName: name,
-					email,
-					id: data?.user?.id,
-					createdAt: new Date(),
-				},
-			]);
-
-		if (profileError) {
+		} else {
 			toast({
-				variant: "destructive",
-				title: "Uh oh! Something went wrong.",
-				description: profileError.message,
+				title: "Success!",
+				description: "Account created",
 			});
-
-			return;
+	
+			// Redirect to dashboard
+			router.push("/auth/signup/success");
 		}
 
-		toast({
-			title: "Success!",
-			description: "Account created",
-		});
-
-		// Redirect to dashboard
-		router.push("/auth/signup/success");
 	}
 
   async function handleGoogleSignIn() {
