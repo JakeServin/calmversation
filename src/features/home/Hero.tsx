@@ -23,10 +23,10 @@ const Hero = () => {
 				(fade ? "opacity-0" : "opacity-100") + " "
 			}`}
 		>
-			<div className="flex container py-20">
+			<div className="flex container py-20 items-center">
 				{/* Left */}
-				<div className="sm:ml-5 w-full md:w-1/2 sm:py-60">
-					<h1 className={`text-7xl font-bold sm:w-3/4 lg:text-8xl`}>
+				<div className=" w-full md:w-1/2 sm:py-60">
+					<h1 className={`text-7xl font-bold lg:text-8xl`}>
 						Let&apos;s talk about it.
 					</h1>
 					<div
@@ -50,18 +50,18 @@ const Hero = () => {
 				</div>
 
 				{/* Right */}
-				<div className="w-1/2 pl-20 py-20 hidden md:block">
+				<div className="w-1/2 min-w-[500px] pl-20 mb-32 hidden md:block">
 					<Image
 						alt="hero image"
 						src="/images/hero_image.png"
-						width={500}
-						height={500}
+						width={600}
+						height={600}
 					/>
 				</div>
 			</div>
 
 			{/* App Description */}
-			<div className="bg-amber-100 p-8 md:p-16">
+			<div className="bg-amber-100 py-16">
 				<div className="container">
 					<h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-6">
 						Empower Your Well-being With Every Conversation
