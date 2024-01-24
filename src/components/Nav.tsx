@@ -12,27 +12,27 @@ import {
 	AlertDialogTitle,
 	AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { useRouter } from "next/router";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useStore } from "@/store";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useToast } from "./ui/use-toast";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Sheet, SheetContent, SheetTrigger, SheetClose } from "./ui/sheet";
 
 export const Nav = () => {
 	const path = usePathname();
 	const { user, setUser } = useStore();
 	const { toast } = useToast();
 	const supabase = createClientComponentClient();
+	const router = useRouter();
 
 	useEffect(() => {
 		if (!user) {
 			reAuthenticate();
 		}
-	}, [])
+	}, []);
 
 	const reAuthenticate = async () => {
-
 		const { data, error } = await supabase.auth.getUser();
 
 		if (data?.user) {
@@ -57,6 +57,8 @@ export const Nav = () => {
 			title: "Logged out!",
 			description: "You are now logged out.",
 		});
+
+		router.push("/");
 	};
 
 	return (
@@ -99,33 +101,72 @@ export const Nav = () => {
 				)}
 			</div>
 
-			{/* -- Auth -- */}
-			<div className="flex gap-2">
-				{!user ? (
-					<>
+			<Sheet>
+				<SheetTrigger>
+					{/* Hamburger Icon */}
+					<div className="md:hidden *:*:hover:bg-gray-500">
+						<div className="space-y-2">
+							{/* Hamburger Icon Lines */}
+							<span className="block w-8 h-0.5 bg-black"></span>
+							<span className="block w-8 h-0.5 bg-black"></span>
+							<span className="block w-8 h-0.5 bg-black"></span>
+						</div>
+					</div>
+				</SheetTrigger>
+				<SheetContent className="w-[400px] sm:w-[540px]">
+					{/* -- Auth -- */}
+					<div className="flex flex-col gap-2 mt-5">
 						<Link href="/auth/login">
-							<Button
-								variant={"ghost"}
-								className="text-lg sm:text-lg  w-full font-semibold rounded-full bg-white hover:bg-white"
-							>
-								Log in
-							</Button>
+							<SheetClose className="w-full">
+								<Button
+									variant={"ghost"}
+									className="text-lg sm:text-lg  w-full font-semibold rounded-full bg-secondary hover:bg-white"
+								>
+									Log in
+								</Button>
+							</SheetClose>
 						</Link>
 						<Link href="/auth/signup">
-							<Button className="text-lg sm:text-lg  w-full sm:px-10 font-semibold rounded-full ">
-								Sign up
-							</Button>
+							<SheetClose className="w-full">
+								<Button className="text-lg sm:text-lg  w-full sm:px-10 font-semibold rounded-full ">
+									Sign up
+								</Button>
+							</SheetClose>
 						</Link>
-					</>
-				) : (
-					<Button
-						className="text-lg sm:text-lg  w-full sm:px-10 font-semibold rounded-full "
-						onClick={handleSignOut}
-					>
-						Sign out
-					</Button>
-				)}
-			</div>
+					</div>
+				</SheetContent>
+			</Sheet>
+
+			{!user ? (
+				<>
+					{/* Menu Items */}
+					<div className={`hidden md:inline-block`}>
+						{/* -- Auth -- */}
+						<div className="flex gap-2">
+							<Link href="/auth/login">
+								<Button
+									variant={"ghost"}
+									className="text-lg sm:text-lg  w-full font-semibold rounded-full bg-white hover:bg-white"
+								>
+									Log in
+								</Button>
+							</Link>
+							<Link href="/auth/signup">
+								<Button className="text-lg sm:text-lg  w-full sm:px-10 font-semibold rounded-full ">
+									Sign up
+								</Button>
+							</Link>
+						</div>
+					</div>
+				</>
+			) : (
+				<Button
+					className="text-lg sm:text-lg  w-full sm:px-10 font-semibold rounded-full "
+					onClick={handleSignOut}
+				>
+					Sign out
+				</Button>
+			)}
 		</nav>
 	);
 };
