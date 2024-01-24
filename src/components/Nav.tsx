@@ -14,9 +14,50 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useRouter } from "next/router";
 import { usePathname } from "next/navigation";
+import { useStore } from "@/store";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useToast } from "./ui/use-toast";
+import { useEffect } from "react";
 
 export const Nav = () => {
 	const path = usePathname();
+	const { user, setUser } = useStore();
+	const { toast } = useToast();
+	const supabase = createClientComponentClient();
+
+	useEffect(() => {
+		if (!user) {
+			reAuthenticate();
+		}
+	}, [])
+
+	const reAuthenticate = async () => {
+
+		const { data, error } = await supabase.auth.getUser();
+
+		if (data?.user) {
+			setUser(data.user);
+		}
+	};
+
+	const handleSignOut = async () => {
+		const { error } = await supabase.auth.signOut();
+		if (error) {
+			toast({
+				variant: "destructive",
+				title: "Uh oh! Something went wrong.",
+				description: error.message,
+			});
+		}
+
+		setUser(null);
+
+		toast({
+			className: "bg-green-400 border-0 text-white",
+			title: "Logged out!",
+			description: "You are now logged out.",
+		});
+	};
 
 	return (
 		<nav className="flex justify-between items-center pt-5 pb-3 container">
@@ -59,13 +100,32 @@ export const Nav = () => {
 			</div>
 
 			{/* -- Auth -- */}
-			{path != "/talk" && (
-				<Link href="/talk">
-					<Button className="text-lg sm:text-lg  w-full sm:px-10 font-semibold">
-						Chat Now
+			<div className="flex gap-2">
+				{!user ? (
+					<>
+						<Link href="/auth/login">
+							<Button
+								variant={"ghost"}
+								className="text-lg sm:text-lg  w-full font-semibold rounded-full bg-white hover:bg-white"
+							>
+								Log in
+							</Button>
+						</Link>
+						<Link href="/auth/signup">
+							<Button className="text-lg sm:text-lg  w-full sm:px-10 font-semibold rounded-full ">
+								Sign up
+							</Button>
+						</Link>
+					</>
+				) : (
+					<Button
+						className="text-lg sm:text-lg  w-full sm:px-10 font-semibold rounded-full "
+						onClick={handleSignOut}
+					>
+						Sign out
 					</Button>
-				</Link>
-			)}
+				)}
+			</div>
 		</nav>
 	);
 };

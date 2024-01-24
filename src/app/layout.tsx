@@ -4,6 +4,7 @@ import './globals.css'
 import { Nav } from '@/components/Nav'
 import Footer from '@/components/Footer'
 import Head from 'next/head'
+import { Toaster } from '@/components/ui/toaster'
 
 const inter = Inter({ subsets: ['latin'] })
 const montserrat = Montserrat({ subsets: ['latin'] })
@@ -19,14 +20,13 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={montserrat.className}>
-        <Nav />
-        <main>
-          {children}
-        </main>
-        <Footer />
-      </body>
-    </html>
-  )
+		<html lang="en">
+			<body className={montserrat.className}>
+				<Nav />
+				<main>{children}</main>
+				<Toaster />
+				<Footer />
+			</body>
+		</html>
+  );
 }

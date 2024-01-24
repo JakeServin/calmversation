@@ -1,6 +1,6 @@
 import { useState } from "react";
 import moment from "moment";
-import { CHAT_PROMPT } from "@/constants";
+import { CHAT_PROMPT } from "@/common/constants";
 
 interface Message {
 	name: string;
