@@ -16,20 +16,49 @@ import { usePathname, useRouter } from "next/navigation";
 import { useStore } from "@/store";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useToast } from "./ui/use-toast";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "./ui/sheet";
 
 export const Nav = () => {
 	const path = usePathname();
-	const { user, setUser } = useStore();
+	const { user, setUser, setMessages } = useStore();
+	const router = useRouter();
 	const { toast } = useToast();
 	const supabase = createClientComponentClient();
-	const router = useRouter();
 
 	useEffect(() => {
-		if (!user) {
-			reAuthenticate();
-		}
+		// Check if user is logged in
+		reAuthenticate();
+
+		const { data: authListener } = supabase.auth.onAuthStateChange(
+			(event, session) => {
+				if (event === "SIGNED_IN") {
+					session && setUser(session.user);
+					toast({
+						className: "bg-green-400 border-0 text-white",
+						title: "Logged in!",
+						description: "You are now logged in.",
+					});
+
+					// Sync Messages
+					syncMessages();
+				} else if (event === "SIGNED_OUT") {
+					router.push("/");
+					setUser(null);
+					setMessages([]);
+					toast({
+						className: "bg-green-400 border-0 text-white",
+						title: "Logged out!",
+						description: "You are now logged out.",
+					});
+				}
+			}
+		);
+
+		return () => {
+			if (authListener && authListener.subscription)
+				authListener.subscription.unsubscribe();
+		};
 	}, []);
 
 	const reAuthenticate = async () => {
@@ -40,6 +69,8 @@ export const Nav = () => {
 		}
 	};
 
+	const syncMessages = async () => {};
+
 	const handleSignOut = async () => {
 		const { error } = await supabase.auth.signOut();
 		if (error) {
@@ -49,16 +80,6 @@ export const Nav = () => {
 				description: error.message,
 			});
 		}
-
-		setUser(null);
-
-		toast({
-			className: "bg-green-400 border-0 text-white",
-			title: "Logged out!",
-			description: "You are now logged out.",
-		});
-
-		router.push("/");
 	};
 
 	return (

@@ -3,9 +3,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { lora } from "@/common/fonts";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "@/components/ui/form";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,11 +23,26 @@ import { useStore } from "@/store";
 import Image from "next/image";
 
 const LogIn = () => {
-  const supabase = createClientComponentClient();
-  const router = useRouter();
+	const supabase = createClientComponentClient();
+	const router = useRouter();
 	const { toast } = useToast();
-  const [loading, setLoading] = useState(false);
-  const {setUser} = useStore();
+	const [loading, setLoading] = useState(false);
+	const { setUser, messages, setMessages } = useStore();
+
+	useEffect(() => {
+		const { data: authListener } = supabase.auth.onAuthStateChange(
+			(event, session) => {
+				if (event === "SIGNED_IN") {
+					router.push("/talk");
+				}
+			}
+		);
+
+		return () => {
+			if (authListener && authListener.subscription)
+				authListener.subscription.unsubscribe();
+		};
+	}, []);
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -31,14 +53,14 @@ const LogIn = () => {
 	});
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
-    const { email, password } = values;
+		const { email, password } = values;
 
 		setLoading(true);
 		const { data, error } = await supabase.auth.signInWithPassword({
 			email,
-			password
-    });
-    setLoading(false);
+			password,
+		});
+		setLoading(false);
 
 		if (error) {
 			toast({
@@ -47,31 +69,31 @@ const LogIn = () => {
 				description: error.message,
 			});
 			return;
-    }
+		}
 
-    setUser(data?.user);
+		setUser(data?.user);
 
-    toast({
-      className: 'bg-green-400 border-0 text-white',
-      title: 'Logged in!',
-      description: 'You are now logged in.'
-    })
-    router.push('/talk')
-  }
-  
-  async function handleGoogleSignIn() {
+		toast({
+			className: "bg-green-400 border-0 text-white",
+			title: "Logged in!",
+			description: "You are now logged in.",
+		});
+		router.push("/talk");
+	}
+
+	async function handleGoogleSignIn() {
 		const { data, error } = await supabase.auth.signInWithOAuth({
 			provider: "google",
 			options: {
-				queryParams: {
-					access_type: "offline",
-					prompt: "consent",
-				},
+				skipBrowserRedirect: true,
+				redirectTo: "http://localhost:3000/auth/login/success",
 			},
 		});
 
 		if (error) console.error("Login error", error);
-  }
+
+		data.url && window.open(data.url, "googleAuth", "width=500,height=600");
+	}
 
 	return (
 		<div className="flex justify-center">
@@ -95,6 +117,7 @@ const LogIn = () => {
 										<FormControl>
 											<Input
 												placeholder="example@mail.com"
+												autoComplete="email"
 												{...field}
 											/>
 										</FormControl>
@@ -112,6 +135,7 @@ const LogIn = () => {
 											<Input
 												placeholder="Password (5 or more characters)"
 												type="password"
+												autoComplete="current-password"
 												{...field}
 											/>
 										</FormControl>
@@ -176,6 +200,13 @@ const LogIn = () => {
 						</div>
 						Continue with Google
 					</Button>
+					<div
+						id="g_id_onload"
+						data-client_id="YOUR_GOOGLE_CLIENT_ID"
+						data-login_uri="https://your.domain/your_login_endpoint"
+						data-your_own_param_1_to_login="any_value"
+						data-your_own_param_2_to_login="any_value"
+					></div>
 				</div>
 
 				<div className="my-5">
@@ -192,7 +223,6 @@ const LogIn = () => {
 };
 
 export default LogIn;
-
 
 const formSchema = z.object({
 	email: z.string().email(),

@@ -7,42 +7,47 @@ type AiMessageProps = {
 	time: string;
 	content: string;
 	name: string;
-	avatarImage?: string;
-	avatarFallback: string;
+	sentByAura: boolean;
 	onNewLine: () => void;
+	triggerType: boolean;
 };
 
-const roboto = Roboto({ subsets: ["latin"], weight: ['100', '300', '400', '500', '700', '900'] });
-const openSans = Open_Sans({ subsets: ["latin"], weight: ['300', '400', '500', '700'] });
+const roboto = Roboto({
+	subsets: ["latin"],
+	weight: ["100", "300", "400", "500", "700", "900"],
+});
+const openSans = Open_Sans({
+	subsets: ["latin"],
+	weight: ["300", "400", "500", "700"],
+});
 
 const Message = ({
 	time,
 	content,
-	avatarImage,
-	avatarFallback,
 	name,
-	onNewLine
+	sentByAura,
+	onNewLine,
+	triggerType,
 }: AiMessageProps) => {
-
 	const [typedContent, setTypedContent] = useState("");
 	const typingSpeedMs = 70; // Adjust typing speed as needed
 
 	useEffect(() => {
 		let charIndex = 0;
 
-		const typingInterval = setInterval(() => {
-			if (charIndex < content.length) {
-				setTypedContent(
-					content.substring(0, charIndex + 1)
-				);
-				charIndex++;
-			} else {
-				clearInterval(typingInterval);
-			}
-		}, typingSpeedMs);
+		if (triggerType) {
+			const typingInterval = setInterval(() => {
+				if (charIndex < content.length) {
+					setTypedContent(content.substring(0, charIndex + 1));
+					charIndex++;
+				} else {
+					clearInterval(typingInterval);
+				}
+			}, typingSpeedMs);
 
-		// Cleanup interval on component unmount
-		return () => clearInterval(typingInterval);
+			// Cleanup interval on component unmount
+			return () => clearInterval(typingInterval);
+		}
 	}, [content, typingSpeedMs]);
 
 	useEffect(() => {
@@ -54,8 +59,15 @@ const Message = ({
 		<div className={`flex mb-2 ${openSans.className}`}>
 			{/* Avatar */}
 			<Avatar>
-				<AvatarImage src={avatarImage} alt="avatar image" />
-				<AvatarFallback>{avatarFallback}</AvatarFallback>
+				<AvatarImage
+					src={
+						sentByAura
+							? "https://64.media.tumblr.com/6cb0ae44278156aa660d95d55df340de/tumblr_nz14o7t0Z61skcd7fo1_500.gifv"
+							: ""
+					}
+					alt="avatar image"
+				/>
+				<AvatarFallback>{name[0].toUpperCase()}</AvatarFallback>
 			</Avatar>
 
 			{/* Message */}
@@ -69,7 +81,9 @@ const Message = ({
 				</div>
 
 				{/* Message Content */}
-				<div className="text-gray-600 mb-2 last:mb-0 text-sm">{name == "Aura" ? typedContent : content}</div>
+				<div className="text-gray-600 mb-2 last:mb-0 text-sm">
+					{triggerType ? typedContent : content}
+				</div>
 			</div>
 		</div>
 	);

@@ -3,12 +3,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { lora } from "@/common/fonts";
 import {
 	Form,
 	FormControl,
-	FormDescription,
 	FormField,
 	FormItem,
 	FormLabel,
@@ -19,7 +18,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useToast } from "@/components/ui/use-toast";
-import { set } from "date-fns";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
@@ -44,6 +42,21 @@ const SignUp = () => {
 	const { toast } = useToast();
 	const [loading, setLoading] = useState(false);
 
+	useEffect(() => {
+		const { data: authListener } = supabase.auth.onAuthStateChange(
+			(event, session) => {
+				if (event === "SIGNED_IN") {
+					router.push("/talk");
+				}
+			}
+		);
+
+		return () => {
+			if (authListener && authListener.subscription)
+				authListener.subscription.unsubscribe();
+		};
+	}, []);
+
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -59,9 +72,11 @@ const SignUp = () => {
 
 		// Verify user doesn't already exist
 		const { data: user } = await supabase
-			.from("Profiles")
+			.from("profiles")
 			.select("*")
-      .eq("email", email);
+			.eq("email", email);
+
+		alert();
 
 		if (user?.length) {
 			toast({
@@ -99,25 +114,24 @@ const SignUp = () => {
 				title: "Success!",
 				description: "Account created",
 			});
-	
+
 			// Redirect to dashboard
 			router.push("/auth/signup/success");
 		}
-
 	}
 
-  async function handleGoogleSignIn() {
+	async function handleGoogleSignIn() {
 		const { data, error } = await supabase.auth.signInWithOAuth({
 			provider: "google",
 			options: {
-				queryParams: {
-					access_type: "offline",
-					prompt: "consent",
-				},
+				skipBrowserRedirect: true,
+				redirectTo: "http://localhost:3000/auth/login/success",
 			},
 		});
 
 		if (error) console.error("Login error", error);
+
+		data.url && window.open(data.url, "googleAuth", "width=500,height=600");
 	}
 
 	return (
@@ -178,6 +192,7 @@ const SignUp = () => {
 										<FormControl>
 											<Input
 												placeholder="What should we call you?"
+												autoComplete="name"
 												{...field}
 											/>
 										</FormControl>
@@ -194,6 +209,7 @@ const SignUp = () => {
 										<FormControl>
 											<Input
 												placeholder="example@mail.com"
+												autoComplete="email"
 												{...field}
 											/>
 										</FormControl>
@@ -211,6 +227,7 @@ const SignUp = () => {
 											<Input
 												placeholder="Password (5 or more characters)"
 												type="password"
+												autoComplete="new-password"
 												{...field}
 											/>
 										</FormControl>
@@ -227,6 +244,7 @@ const SignUp = () => {
 											<Input
 												placeholder="Confirm password"
 												type="password"
+												autoComplete="new-password"
 												{...field}
 											/>
 										</FormControl>
