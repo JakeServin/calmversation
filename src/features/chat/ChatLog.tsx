@@ -6,7 +6,8 @@ interface Message {
 	name: string;
 	content: string;
 	sentByAura: boolean;
-	time: string;
+	time: Date;
+	id?: string;
 }
 
 type ChatLogProps = {
@@ -33,11 +34,13 @@ const ChatLog = ({ messages, active }: ChatLogProps) => {
 	return (
 		<div
 			id="chat_log"
-			className="container mt-5 min-h-80 sm:min-h-48 max-h-[68vh] sm:max-h-80 overflow-scroll scroll-smooth"
+			className="container px-0 mt-5 min-h-80 sm:min-h-48 max-h-[68vh] sm:max-h-80 overflow-scroll scroll-smooth"
 			ref={chatLogRef}
 		>
 			{messages.map((message, index) => (
 				<Message
+					index={index}
+					id={message.id}
 					onNewLine={scrollToBottom}
 					key={"message" + index}
 					name={message.name}

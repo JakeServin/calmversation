@@ -135,59 +135,67 @@ export const Nav = () => {
 					</div>
 				</SheetTrigger>
 				<SheetContent className="w-[400px] sm:w-[540px]">
-					{/* -- Auth -- */}
-					<div className="flex flex-col gap-2 mt-5">
-						<Link href="/auth/login">
-							<SheetClose className="w-full">
-								<Button
-									variant={"ghost"}
-									className="text-lg sm:text-lg  w-full font-semibold rounded-full bg-secondary hover:bg-white"
-								>
-									Log in
-								</Button>
-							</SheetClose>
-						</Link>
-						<Link href="/auth/signup">
-							<SheetClose className="w-full">
-								<Button className="text-lg sm:text-lg  w-full sm:px-10 font-semibold rounded-full ">
-									Sign up
-								</Button>
-							</SheetClose>
-						</Link>
-					</div>
-				</SheetContent>
-			</Sheet>
-
-			{!user ? (
-				<>
-					{/* Menu Items */}
-					<div className={`hidden md:inline-block`}>
-						{/* -- Auth -- */}
-						<div className="flex gap-2">
+					{!user ? (
+						// -- Auth --
+						<div className="flex flex-col gap-2 mt-5">
 							<Link href="/auth/login">
-								<Button
-									variant={"ghost"}
-									className="text-lg sm:text-lg  w-full font-semibold rounded-full bg-white hover:bg-white"
-								>
-									Log in
-								</Button>
+								<SheetClose className="w-full">
+									<Button
+										variant={"ghost"}
+										className="text-lg sm:text-lg  w-full font-semibold rounded-full bg-secondary hover:bg-white"
+									>
+										Log in
+									</Button>
+								</SheetClose>
 							</Link>
 							<Link href="/auth/signup">
-								<Button className="text-lg sm:text-lg  w-full sm:px-10 font-semibold rounded-full ">
-									Sign up
-								</Button>
+								<SheetClose className="w-full">
+									<Button className="text-lg sm:text-lg  w-full sm:px-10 font-semibold rounded-full ">
+										Sign up
+									</Button>
+								</SheetClose>
 							</Link>
 						</div>
+					) : (
+						<SheetClose className="w-full mt-5">
+							<Button
+								className="text-lg sm:text-lg sm:px-10 font-semibold rounded-full w-full"
+								onClick={handleSignOut}
+							>
+								Sign out
+							</Button>
+						</SheetClose>
+					)}
+				</SheetContent>
+			</Sheet>
+			{/* Menu Items */}
+			<div className="hidden md:inline-block">
+				{!user ? (
+					// -- Auth --
+					<div className="flex gap-2">
+						<Link href="/auth/login">
+							<Button
+								variant={"ghost"}
+								className="text-lg sm:text-lg  w-full font-semibold rounded-full bg-white hover:bg-white"
+							>
+								Log in
+							</Button>
+						</Link>
+						<Link href="/auth/signup">
+							<Button className="text-lg sm:text-lg  w-full sm:px-10 font-semibold rounded-full ">
+								Sign up
+							</Button>
+						</Link>
 					</div>
-				</>
-			) : (
-				<Button
-					className="text-lg sm:text-lg sm:px-10 font-semibold rounded-full "
-					onClick={handleSignOut}
-				>
-					Sign out
-				</Button>
-			)}
+				) : (
+					<Button
+						className="text-lg sm:text-lg sm:px-10 font-semibold rounded-full "
+						onClick={handleSignOut}
+					>
+						Sign out
+					</Button>
+				)}
+			</div>
 		</nav>
 	);
 };

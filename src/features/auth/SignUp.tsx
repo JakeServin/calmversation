@@ -20,6 +20,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { useStore } from "@/store";
 
 const formSchema = z
 	.object({
@@ -38,7 +39,8 @@ const formSchema = z
 
 const SignUp = () => {
 	const router = useRouter();
-	const supabase = createClientComponentClient();
+	const supabase = createClientComponentClient()
+	const { messages } = useStore();
 	const { toast } = useToast();
 	const [loading, setLoading] = useState(false);
 
@@ -76,8 +78,6 @@ const SignUp = () => {
 			.select("*")
 			.eq("email", email);
 
-		alert();
-
 		if (user?.length) {
 			toast({
 				variant: "destructive",
@@ -111,12 +111,13 @@ const SignUp = () => {
 			return;
 		} else {
 			toast({
-				title: "Success!",
-				description: "Account created",
+				title: "Account Created!",
+				description: `Account created successfully. In order to save your conversation history, keep this tab open and sign in after clicking the link in your email`,
 			});
 
 			// Redirect to dashboard
-			router.push("/auth/signup/success");
+			router.push("/talk");
+
 		}
 	}
 

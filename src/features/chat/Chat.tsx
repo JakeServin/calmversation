@@ -22,54 +22,22 @@ const Chat = () => {
 	useEffect(() => {
 		if (messages.length > 0) setIsExpanded(false);
 
-		if (user) syncMessages();
+		syncMessages(); 
 	}, [user, messages]);
 
-	const startConversation = async () => {
-		setIsExpanded(!isExpanded); // Toggle the isExpanded state
+	useEffect(() => {
+		setTimeout(() => {
+			setFade(false);
+		}, 100);
+	}, []);
 
-		// If there are already messages, don't start a new conversation
-		if (messages.length > 0) {
-			return;
-		}
-
-		// Start a new conversation
-		setResponding(true);
-		setActive(true);
-		const response = await fetch("/api/openai/get_response", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				messages: [
-					{
-						role: "system",
-						content: CHAT_PROMPT,
-					},
-					{
-						role: "user",
-						content: "Start a conversation",
-					},
-				],
-			}),
-		});
-		const { textResponse } = await response.json();
-
-		setMessages([
-			{
-				name: "Aura",
-				sentByAura: true,
-				content: textResponse.choices[0].message.content || "",
-				time: moment().format("h:mm A"),
-			},
-		]);
-		setResponding(false);
-
-		speak(textResponse.choices[0].message.content || "");
+	const handleButtonClick = async () => {
+		startConversation();
 	};
 
 	const handleSend = async () => {
+		if (!input) return;
+
 		setActive(true);
 
 		// Add message to chat log
@@ -79,11 +47,10 @@ const Chat = () => {
 				name: "You",
 				sentByAura: false,
 				content: input,
-				time: moment().format("h:mm A"),
+				time: new Date(),
 			},
 		]);
 		setInput("");
-		alert("ADDED TO LOG");
 
 		setResponding(true);
 		// Format messages for OpenAI
@@ -131,11 +98,12 @@ const Chat = () => {
 				name: "Aura",
 				sentByAura: true,
 				content: textResponse.choices[0].message.content || "",
-				time: moment().format("h:mm A"),
+				time: new Date(),
 			},
 		]);
 
 		speak(textResponse.choices[0].message.content || "");
+		setResponding(false);
 	};
 
 	const speak = async (message: string) => {
@@ -156,102 +124,197 @@ const Chat = () => {
 	};
 
 	const syncMessages = async () => {
-		// Check for thread
-		var threadId = "";
-		const { data, error } = await supabase
-			.from("threads")
-			.select("*")
-			.eq("userId", user?.id);
-		if (!data?.length) {
-			// Create thread
-			const { data: thread, error: threadError } = await supabase
+
+		if (user?.id) {
+
+			// Check for thread
+			var threadId = "";
+			const { data, error } = await supabase
 				.from("threads")
-				.insert([
-					{
-						userId: user?.id,
-					},
-				])
-				.select();
-
-			if (threadError) {
-				console.error(threadError);
-				return;
-			}
-
-			threadId = thread[0].id;
-		} else {
-			threadId = data[0].id;
-		}
-
-		const unsycnedMessages = messages.filter((message) => !message.id);
-
-		if (unsycnedMessages.length) {
-			// Sync unsynced messages to database
-			for (let message of unsycnedMessages) {
-				const syncedMessage = {
-					sentAt: moment(message.time, "h:mm A").format(),
-					content: message.content,
-					sentByAura: message.name === "Aura",
-					threadId: threadId,
-				};
+				.select("*")
+				.eq("userId", user?.id);
+			if (!data?.length) {
+				// Create thread
 				const { data: thread, error: threadError } = await supabase
-					.from("messages")
-					.insert([syncedMessage])
+					.from("threads")
+					.insert([{userId: user?.id},])
 					.select();
-
+	
 				if (threadError) {
 					console.error(threadError);
+					return;
+				}
+	
+				threadId = thread[0].id;
+			} else {
+				threadId = data[0].id;
+			}
+	
+			const unsycnedMessages = messages.filter((message) => !message.id);
+	
+			console.log(user, messages, unsycnedMessages)
+			if (unsycnedMessages.length) {
+				// Sync unsynced messages to database
+				for (let message of unsycnedMessages) {
+					// Encrypt message content
+	
+					// Encrypt message here
+					const encryptedContent = await encryptMessage(message.content);
+	
+					const syncedMessage = {
+						sentAt: message.time,
+						content: encryptedContent.ciphertext,
+						iv: encryptedContent.iv,
+						sentByAura: message.name === "Aura",
+						threadId: threadId,
+					};
+					const { data: thread, error: threadError } = await supabase
+						.from("messages")
+						.insert([syncedMessage])
+						.select();
+	
+					if (threadError) {
+						console.error(threadError);
+					}
+				}
+	
+				// Get messages from database
+				const { data: databaseMessages, error: messagesError } =
+					await supabase
+						.from("messages")
+						.select("*")
+						.eq("threadId", threadId)
+						.order("sentAt");
+	
+				if (databaseMessages) {
+					const decryptedMessages = await Promise.all(
+						databaseMessages.map(async (message) => {
+							const decryptedContent = await decryptMessage(
+								message.content,
+								message.iv,
+							);
+							return {
+								...message,
+								content: decryptedContent,
+							};
+						})
+					);
+	
+					setMessages(
+						decryptedMessages.map((message) => ({
+							id: message.id,
+							name: message.sentByAura ? "Aura" : "You",
+							content: message.content,
+							sentByAura: message.sentByAura,
+							time: message.sentAt,
+						}))
+					);
+				}
+			} else if (!messages.length) {
+				// Get messages from database
+				const { data: databaseMessages, error: messagesError } =
+					await supabase
+						.from("messages")
+						.select("*")
+						.eq("threadId", threadId);
+				// .order("id");
+
+				if (databaseMessages?.length) {
+					const decryptedMessages = await Promise.all(
+						databaseMessages.map(async (message) => {
+							const decryptedContent = await decryptMessage(
+								message.content,
+								message.iv,
+							);
+							return {
+								...message,
+								content: decryptedContent,
+							};
+						})
+					);
+	
+					setMessages(
+						decryptedMessages.map((message) => ({
+							id: message.id,
+							name: message.sentByAura ? "Aura" : "You",
+							content: message.content,
+							sentByAura: message.sentByAura,
+							time: message.sentAt,
+						}))
+					);
 				}
 			}
-
-			// Get messages from database
-			const { data: databaseMessages, error: messagesError } =
-				await supabase
-					.from("messages")
-					.select("*")
-					.eq("threadId", threadId);
-
-			databaseMessages &&
-				setMessages(
-					databaseMessages.map((message) => ({
-						id: message.id,
-						name: message.sentByAura ? "Aura" : "You",
-						content: message.content,
-						sentByAura: message.sentByAura,
-						time: moment(message.sentAt).format("h:mm A"),
-					}))
-				);
-		} else if (!messages.length) {
-			// Get messages from database
-			const { data: databaseMessages, error: messagesError } =
-				await supabase
-					.from("messages")
-					.select("*")
-					.eq("threadId", threadId)
-					.order("id");
-
-			databaseMessages &&
-				setMessages(
-					databaseMessages.map((message) => ({
-						id: message.id,
-						name: message.sentByAura ? "Aura" : "You",
-						content: message.content,
-						sentByAura: message.sentByAura,
-						time: moment(message.sentAt).format("h:mm A"),
-					}))
-				);
 		}
 	};
 
-	useEffect(() => {
-		setTimeout(() => {
-			setFade(false);
-		}, 100);
-	}, []);
+	const startConversation = async () => {
+		setIsExpanded(!isExpanded); // Toggle the isExpanded state
 
-	const handleButtonClick = async () => {
-		startConversation();
+		// If there are already messages, don't start a new conversation
+		if (messages.length > 0) {
+			return;
+		}
+
+		// Start a new conversation
+		setResponding(true);
+		setActive(true);
+		const response = await fetch("/api/openai/get_response", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				messages: [
+					{
+						role: "system",
+						content: CHAT_PROMPT,
+					},
+					{
+						role: "user",
+						content: "Start a conversation",
+					},
+				],
+			}),
+		});
+		const { textResponse } = await response.json();
+
+		setMessages([
+			{
+				name: "Aura",
+				sentByAura: true,
+				content: textResponse.choices[0].message.content || "",
+				time: new Date(),
+			},
+		]);
+		setResponding(false);
+
+		speak(textResponse.choices[0].message.content || "");
 	};
+	
+	async function encryptMessage(plaintext: string) {
+		const response = await fetch("/api/encrypt", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ plaintext }),
+		});
+
+		const { ciphertext, iv } = await response.json();
+		return { ciphertext, iv };
+	}
+
+	async function decryptMessage(ciphertext: string, iv:string) {
+		const response = await fetch("/api/decrypt", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ ciphertext, iv }),
+		});
+		const { plaintext } = await response.json();
+		return plaintext;
+	}
 
 	return (
 		<div
