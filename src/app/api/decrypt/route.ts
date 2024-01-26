@@ -32,7 +32,7 @@ async function decryptMessage(
 		c.charCodeAt(0)
 	);
 	const keyBuffer = Uint8Array.from(
-		atob(process.env.NEXT_PUBLIC_CHAT_ENCRYPTION_KEY ?? ""),
+		atob(process.env.NEXT_CHAT_ENCRYPTION_KEY ?? ""),
 		(c) => c.charCodeAt(0)
 	);
 

@@ -49,7 +49,7 @@ async function encryptMessage(
 ): Promise<{ ciphertext: string; iv: string }> {
 	const iv = crypto.getRandomValues(new Uint8Array(12));
 	const encoded = new TextEncoder().encode(plaintext);
-	const keyBuffer = Uint8Array.from(atob(process.env.NEXT_PUBLIC_CHAT_ENCRYPTION_KEY ?? ''), (c) => c.charCodeAt(0));
+	const keyBuffer = Uint8Array.from(atob(process.env.NEXT_CHAT_ENCRYPTION_KEY ?? ''), (c) => c.charCodeAt(0));
 
 	const rawKey = await crypto.subtle.importKey(
 		"raw",
