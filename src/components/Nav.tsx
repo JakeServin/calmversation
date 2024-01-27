@@ -86,7 +86,7 @@ export const Nav = () => {
 
 	return (
 		!path.includes("success") && (
-			<nav className="flex justify-between items-center pt-5 pb-3 container lg:px-0">
+			<nav className="flex justify-between items-center pt-5 pb-3 container">
 				{/* -- Logo -- */}
 				<div className="flex gap-5 items-center">
 					<div>
