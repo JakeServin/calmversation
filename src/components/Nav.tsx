@@ -17,8 +17,9 @@ import { useStore } from "@/store";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useToast } from "./ui/use-toast";
 import { useEffect } from "react";
-import { Sheet, SheetContent, SheetTrigger, SheetClose } from "./ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetFooter } from "./ui/sheet";
 import { Separator } from "@/components/ui/separator";
+import Image from "next/image";
 
 export const Nav = () => {
 	const path = usePathname();
@@ -87,12 +88,18 @@ export const Nav = () => {
 		!path.includes("success") && (
 			<nav className="flex justify-between items-center pt-5 pb-3 container lg:px-0">
 				{/* -- Logo -- */}
-				<div className="flex gap-5">
-					<Link href={"/"}>
-						<span className="text-3xl font-bold">
-							Calmversation
-						</span>
-					</Link>
+				<div className="flex gap-5 items-center">
+					<div>
+						<Link href={"/"}>
+							<Image
+								src="/images/logo.png"
+								alt="logo"
+								width={200}
+								height={50}
+								className="h-full w-auto"
+							/>
+						</Link>
+					</div>
 				</div>
 
 				<Sheet>
@@ -108,48 +115,58 @@ export const Nav = () => {
 						</div>
 					</SheetTrigger>
 					<SheetContent className="w-[400px] sm:w-[540px]">
-						{!user ? (
-							// -- Auth --
-							<div className="flex flex-col gap-2 mt-5">
-								<Link href="/auth/login">
-									<SheetClose className="w-full">
-										<Button
-											variant={"ghost"}
-											className="text-lg sm:text-lg  w-full font-semibold rounded-full bg-secondary hover:bg-white hover:text-underline"
-										>
-											Log in
-										</Button>
-									</SheetClose>
-								</Link>
-								<Link href="/auth/signup">
-									<SheetClose className="w-full">
-										<Button className="text-lg sm:text-lg  w-full sm:px-10 font-semibold rounded-full ">
-											Sign up
-										</Button>
-									</SheetClose>
-								</Link>
-								<Separator  className="my-2"/>
-								<Link href="/auth/signup">
-									<SheetClose className="w-full">
-										<Button
-											variant={"ghost"}
-											className="text-lg sm:text-lg  w-full font-semibold rounded-full bg-secondary hover:bg-white"
-										>
-											Donate
-										</Button>
-									</SheetClose>
-								</Link>
-							</div>
-						) : (
-							<SheetClose className="w-full mt-5">
-								<Button
-									className="text-lg sm:text-lg sm:px-10 font-semibold rounded-full w-full"
-									onClick={handleSignOut}
-								>
-									Sign out
-								</Button>
-							</SheetClose>
-						)}
+						<div className="h-full flex flex-col justify-between items-center w-full">
+
+							{!user ? (
+								// -- Auth --
+								<div className="flex flex-col gap-2 mt-5 w-full">
+									<Link href="/auth/login">
+										<SheetClose className="w-full">
+											<Button
+												variant={"ghost"}
+												className="text-lg sm:text-lg  w-full font-semibold rounded-full bg-secondary hover:bg-white hover:text-underline"
+											>
+												Log in
+											</Button>
+										</SheetClose>
+									</Link>
+									<Link href="/auth/signup">
+										<SheetClose className="w-full">
+											<Button className="text-lg sm:text-lg  w-full sm:px-10 font-semibold rounded-full ">
+												Sign up
+											</Button>
+										</SheetClose>
+									</Link>
+									<Separator className="my-2" />
+									<Link href="/auth/signup">
+										<SheetClose className="w-full">
+											<Button
+												variant={"ghost"}
+												className="text-lg sm:text-lg  w-full font-semibold rounded-full bg-secondary hover:bg-white"
+											>
+												Donate
+											</Button>
+										</SheetClose>
+									</Link>
+								</div>
+							) : (
+								<SheetClose className="w-full mt-5">
+									<Button
+										className="text-lg sm:text-lg sm:px-10 font-semibold rounded-full w-full"
+										onClick={handleSignOut}
+									>
+										Sign out
+									</Button>
+								</SheetClose>
+							)}
+							<Image
+								src="/images/logo.png"
+								alt="logo"
+								width={200}
+								height={50}
+								className=""
+							/>
+						</div>
 					</SheetContent>
 				</Sheet>
 				{/* Menu Items */}

@@ -26,7 +26,7 @@ const Hero = () => {
 		>
 			<div className="flex container py-20 items-center">
 				{/* Left */}
-				<div className=" w-full md:w-1/2 sm:pb-40 sm:pt-52">
+				<div className=" w-full md:w-1/2 sm:py-80">
 					<h1 className={`text-7xl font-bold lg:text-8xl`}>
 						Let&apos;s talk about it.
 					</h1>
@@ -41,7 +41,7 @@ const Hero = () => {
 						<Link href="/talk">
 							<Button
 								variant={"outline"}
-								className="text-xl px-10 py-5 font-semibold border-primary text-primary hover:bg-amber-50 hover:text-primary"
+								className="text-xl px-10 py-5 font-semibold border-primary text-primary hover:bg-amber-50 hover:text-primary w-full sm:w-auto"
 							>
 								{" "}
 								Chat Now{" "}
@@ -60,9 +60,18 @@ const Hero = () => {
 					/>
 				</div>
 			</div>
-			<div className="container px-10 md:hidden">
-				<Separator className="h-1 bg-emerald-200" />
+			<div>
+				<Image
+					alt="lotus"
+					src="/images/lotus.png"
+					width={100}
+					height={75}
+					className="mx-auto "
+				/>
 			</div>
+			{/* <div className="container px-10 md:hidden">
+				<Separator className="h-1 bg-emerald-200" />
+			</div> */}
 			{/* App Description */}
 			<div className="py-20">
 				<div className="container">
@@ -112,7 +121,7 @@ const Hero = () => {
 						to ensure it remains available for those in need,
 						consider{" "}
 						<a
-							className="text-primary"
+							className="text-amber-500 hover:underline"
 							href="https://www.gofundme.com/f/support-calmversation"
 						>
 							supporting us with a donation.
