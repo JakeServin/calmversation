@@ -93,7 +93,8 @@ const SignUp = () => {
 			email,
 			password,
 			options: {
-				emailRedirectTo: "localhost:3000/auth/signin",
+				emailRedirectTo:
+					"https://calmversation-git-auth-jakeservin.vercel.app/auth/signin",
 				data: {
 					name,
 				},
@@ -122,7 +123,8 @@ const SignUp = () => {
 			provider: "google",
 			options: {
 				skipBrowserRedirect: true,
-				redirectTo: "http://localhost:3000/auth/login/success",
+				redirectTo:
+					"https://calmversation-git-auth-jakeservin.vercel.app/auth/login/success",
 			},
 		});
 

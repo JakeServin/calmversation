@@ -86,7 +86,8 @@ const LogIn = () => {
 			provider: "google",
 			options: {
 				skipBrowserRedirect: true,
-				redirectTo: "http://localhost:3000/auth/login/success",
+				redirectTo:
+					"https://calmversation-git-auth-jakeservin.vercel.app/auth/login/success",
 			},
 		});
 
