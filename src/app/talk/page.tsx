@@ -1,10 +1,16 @@
 import Chat from "@/features/chat/Chat";
 import React from "react";
 
-const Talk = () => {
+const Talk = ({
+	params,
+	searchParams,
+}: {
+	params: { slug: string };
+	searchParams: { [key: string]: string | string[] | undefined };
+}) => {
 	return (
 		<div>
-			<Chat/>
+			<Chat searchParams={searchParams} />
 		</div>
 	);
 };

@@ -110,13 +110,9 @@ const SignUp = () => {
 
 			return;
 		} else {
-			toast({
-				title: "Account Created!",
-				description: `Account created successfully. In order to save your conversation history, keep this tab open and sign in after clicking the link in your email`,
-			});
 
 			// Redirect to dashboard
-			router.push("/talk");
+			router.push("/talk?");
 
 		}
 	}
@@ -132,7 +128,7 @@ const SignUp = () => {
 
 		if (error) console.error("Login error", error);
 
-		data.url && window.open(data.url, "googleAuth", "width=500,height=600");
+		data.url && window.open(data.url, "googleAuth", "width=500,height=500");
 	}
 
 	return (

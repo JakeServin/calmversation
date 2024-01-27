@@ -9,8 +9,16 @@ import { CHAT_PROMPT } from "@/common/constants";
 import moment from "moment";
 import { openSans } from "@/common/fonts";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import { AlertDialogAction, AlertDialogCancel } from "@radix-ui/react-alert-dialog";
 
-const Chat = () => {
+const Chat = ({
+	searchParams,
+}: {
+	searchParams: { [key: string]: string | string[] | undefined };
+	}) => {
+	
+	console.log(searchParams)
 	const [fade, setFade] = useState(true);
 	const { messages, setMessages, user } = useStore();
 	const [isExpanded, setIsExpanded] = useState(true);
@@ -18,12 +26,19 @@ const Chat = () => {
 	const [responding, setResponding] = useState(false);
 	const [active, setActive] = useState(false);
 	const supabase = createClientComponentClient();
+	const [confirmEmailModal, setConfirmEmailModal] = useState(false);
+
+	useEffect(() => {
+		if (searchParams?.newUser === "true") {
+			setConfirmEmailModal(true);
+		}
+	}, [])
 
 	useEffect(() => {
 		if (messages.length > 0) setIsExpanded(false);
 
-		syncMessages(); 
-	}, [user, messages]);
+		syncMessages();
+	}, [user?.id, messages]);
 
 	useEffect(() => {
 		setTimeout(() => {
@@ -120,13 +135,11 @@ const Chat = () => {
 		const audio = new Audio(audioUrl);
 		audio.play();
 
-		syncMessages();
+		// syncMessages();
 	};
 
 	const syncMessages = async () => {
-
 		if (user?.id) {
-
 			// Check for thread
 			var threadId = "";
 			const { data, error } = await supabase
@@ -137,30 +150,32 @@ const Chat = () => {
 				// Create thread
 				const { data: thread, error: threadError } = await supabase
 					.from("threads")
-					.insert([{userId: user?.id},])
+					.insert([{ userId: user?.id }])
 					.select();
-	
+
 				if (threadError) {
 					console.error(threadError);
 					return;
 				}
-	
+
 				threadId = thread[0].id;
 			} else {
 				threadId = data[0].id;
 			}
-	
+
 			const unsycnedMessages = messages.filter((message) => !message.id);
-	
-			console.log(user, messages, unsycnedMessages)
+
+			console.log(user, messages, unsycnedMessages);
 			if (unsycnedMessages.length) {
 				// Sync unsynced messages to database
 				for (let message of unsycnedMessages) {
 					// Encrypt message content
-	
+
 					// Encrypt message here
-					const encryptedContent = await encryptMessage(message.content);
-	
+					const encryptedContent = await encryptMessage(
+						message.content
+					);
+
 					const syncedMessage = {
 						sentAt: message.time,
 						content: encryptedContent.ciphertext,
@@ -172,12 +187,12 @@ const Chat = () => {
 						.from("messages")
 						.insert([syncedMessage])
 						.select();
-	
+
 					if (threadError) {
 						console.error(threadError);
 					}
 				}
-	
+
 				// Get messages from database
 				const { data: databaseMessages, error: messagesError } =
 					await supabase
@@ -185,13 +200,13 @@ const Chat = () => {
 						.select("*")
 						.eq("threadId", threadId)
 						.order("sentAt");
-	
+
 				if (databaseMessages) {
 					const decryptedMessages = await Promise.all(
 						databaseMessages.map(async (message) => {
 							const decryptedContent = await decryptMessage(
 								message.content,
-								message.iv,
+								message.iv
 							);
 							return {
 								...message,
@@ -199,7 +214,7 @@ const Chat = () => {
 							};
 						})
 					);
-	
+
 					setMessages(
 						decryptedMessages.map((message) => ({
 							id: message.id,
@@ -224,7 +239,7 @@ const Chat = () => {
 						databaseMessages.map(async (message) => {
 							const decryptedContent = await decryptMessage(
 								message.content,
-								message.iv,
+								message.iv
 							);
 							return {
 								...message,
@@ -232,7 +247,7 @@ const Chat = () => {
 							};
 						})
 					);
-	
+
 					setMessages(
 						decryptedMessages.map((message) => ({
 							id: message.id,
@@ -290,7 +305,7 @@ const Chat = () => {
 
 		speak(textResponse.choices[0].message.content || "");
 	};
-	
+
 	async function encryptMessage(plaintext: string) {
 		const response = await fetch("/api/encrypt", {
 			method: "POST",
@@ -304,7 +319,7 @@ const Chat = () => {
 		return { ciphertext, iv };
 	}
 
-	async function decryptMessage(ciphertext: string, iv:string) {
+	async function decryptMessage(ciphertext: string, iv: string) {
 		const response = await fetch("/api/decrypt", {
 			method: "POST",
 			headers: {
@@ -372,6 +387,29 @@ const Chat = () => {
 					</div>
 				</div>
 			)}
+
+			<AlertDialog
+				open={confirmEmailModal}
+				onOpenChange={() => setConfirmEmailModal(false)}
+			>
+				<AlertDialogContent>
+					<AlertDialogHeader>
+						<AlertDialogTitle>Account successfully created!</AlertDialogTitle>
+						<AlertDialogDescription>
+							In order to save your conversation history,
+							keep this tab open and sign in
+							after clicking the link in your email.
+						</AlertDialogDescription>
+					</AlertDialogHeader>
+					<AlertDialogFooter>
+						<AlertDialogAction>
+							<Button>
+								Continue
+							</Button>
+						</AlertDialogAction>
+					</AlertDialogFooter>
+				</AlertDialogContent>
+			</AlertDialog>
 		</div>
 	);
 };

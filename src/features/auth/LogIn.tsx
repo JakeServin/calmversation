@@ -86,8 +86,7 @@ const LogIn = () => {
 			provider: "google",
 			options: {
 				skipBrowserRedirect: true,
-				redirectTo:
-					"http://192.168.1.142:3000/auth/login/success",
+				redirectTo: "http://localhost:3000/auth/login/success",
 			},
 		});
 

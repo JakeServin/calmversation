@@ -37,7 +37,7 @@ const Message = ({
 	triggerType,
 }: AiMessageProps) => {
 	const supabase = createClientComponentClient();
-	const {messages, setMessages, user} = useStore();
+	const { setMessages, user} = useStore();
 	const [typedContent, setTypedContent] = useState("");
 	const typingSpeedMs = 70; // Adjust typing speed as needed
 
@@ -57,7 +57,7 @@ const Message = ({
 			// Cleanup interval on component unmount
 			return () => clearInterval(typingInterval);
 		}
-	}, [content, typingSpeedMs]);
+	}, [content, typingSpeedMs, triggerType]);
 
 	useEffect(() => {
 		// Scroll to the bottom of the chat log whenever the messages change
