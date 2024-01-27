@@ -121,6 +121,7 @@ const LogIn = () => {
 										<FormLabel>Email</FormLabel>
 										<FormControl>
 											<Input
+												className="text-base"
 												placeholder="example@mail.com"
 												autoComplete="email"
 												{...field}
@@ -138,7 +139,8 @@ const LogIn = () => {
 										<FormLabel>Password</FormLabel>
 										<FormControl>
 											<Input
-												placeholder="Password (5 or more characters)"
+												className="text-base"
+												placeholder="Password"
 												type="password"
 												autoComplete="current-password"
 												{...field}
@@ -191,7 +193,7 @@ const LogIn = () => {
 
 				{/* OAUTH */}
 				<div className="w-full ">
-					<a href={googleAuthUrl}>
+					<a href={googleAuthUrl} target="_window">
 						<Button className="bg-blue-500 text-white text-center rounded-full py-2 text-xs flex justify-center items-center gap-2 w-full hover:bg-blue-400">
 							<div className="bg-white rounded-full p-1">
 								<Image

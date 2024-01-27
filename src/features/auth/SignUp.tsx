@@ -40,7 +40,6 @@ const formSchema = z
 const SignUp = () => {
 	const router = useRouter();
 	const supabase = createClientComponentClient()
-	const { messages } = useStore();
 	const { toast } = useToast();
 	const [loading, setLoading] = useState(false);
 	const [googleAuthUrl, setGoogleAuthUrl] = useState<string | undefined>(
@@ -188,7 +187,7 @@ const SignUp = () => {
 					<Form {...form}>
 						<form
 							onSubmit={form.handleSubmit(onSubmit)}
-							className="space-y-2 *:text-base"
+							className="space-y-2"
 						>
 							<FormField
 								control={form.control}
@@ -198,6 +197,7 @@ const SignUp = () => {
 										<FormLabel>Name</FormLabel>
 										<FormControl>
 											<Input
+												className="text-base"
 												placeholder="What should we call you?"
 												autoComplete="name"
 												{...field}
@@ -215,6 +215,7 @@ const SignUp = () => {
 										<FormLabel>Email</FormLabel>
 										<FormControl>
 											<Input
+												className="text-base"
 												placeholder="example@mail.com"
 												autoComplete="email"
 												{...field}
@@ -232,6 +233,7 @@ const SignUp = () => {
 										<FormLabel>Password</FormLabel>
 										<FormControl>
 											<Input
+												className="text-base"
 												placeholder="Password (5 or more characters)"
 												type="password"
 												autoComplete="new-password"
@@ -249,6 +251,7 @@ const SignUp = () => {
 									<FormItem>
 										<FormControl>
 											<Input
+												className="text-base"
 												placeholder="Confirm password"
 												type="password"
 												autoComplete="new-password"
