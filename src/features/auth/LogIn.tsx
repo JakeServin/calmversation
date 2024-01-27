@@ -87,13 +87,21 @@ const LogIn = () => {
 			options: {
 				skipBrowserRedirect: true,
 				redirectTo:
-					"http://192.168.1.142:3000/auth/login/success",
+					"https://calmversation-git-auth-jakeservin.vercel.app/auth/login/success",
 			},
 		});
 
 		if (error) console.error("Login error", error);
 
-		data.url && window.open(data.url, "googleAuth", "width=500,height=600");
+		// Create an anchor element
+		const anchor = document.createElement("a");
+		anchor.href = data.url ?? ""; // OAuth URL obtained from the response
+		anchor.target = "_blank"; // Open in a new tab
+		anchor.rel = "noopener noreferrer"; // Security measure
+		document.body.appendChild(anchor); // Append to body
+
+		// Simulate a click
+		anchor.click();
 	}
 
 	return (
