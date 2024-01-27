@@ -24,26 +24,6 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
 	}
 }
 
-export default async function handler(
-	req: NextRequest,
-	res: NextApiResponse
-) {
-	if (req.method === "POST") {
-    try {
-      const body = await req.json();
-
-			const { plaintext } = body;
-			const { ciphertext, iv } = await encryptMessage(plaintext);
-			res.status(200).json({ ciphertext, iv });
-		} catch (error) {
-			res.status(500).json({ error: "Encryption failed" });
-		}
-	} else {
-		res.setHeader("Allow", ["POST"]);
-		res.status(405).end(`Method ${req.method} Not Allowed`);
-	}
-}
-
 async function encryptMessage(
 	plaintext: string,
 ): Promise<{ ciphertext: string; iv: string }> {
