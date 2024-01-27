@@ -18,6 +18,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useToast } from "./ui/use-toast";
 import { useEffect } from "react";
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "./ui/sheet";
+import { Separator } from "@/components/ui/separator";
 
 export const Nav = () => {
 	const path = usePathname();
@@ -84,9 +85,9 @@ export const Nav = () => {
 
 	return (
 		!path.includes("success") && (
-			<nav className="flex justify-between items-center pt-5 pb-3 container">
+			<nav className="flex justify-between items-center pt-5 pb-3 container lg:px-0">
 				{/* -- Logo -- */}
-				<div>
+				<div className="flex gap-5">
 					<Link href={"/"}>
 						<span className="text-3xl font-bold">
 							Calmversation
@@ -114,7 +115,7 @@ export const Nav = () => {
 									<SheetClose className="w-full">
 										<Button
 											variant={"ghost"}
-											className="text-lg sm:text-lg  w-full font-semibold rounded-full bg-secondary hover:bg-white"
+											className="text-lg sm:text-lg  w-full font-semibold rounded-full bg-secondary hover:bg-white hover:text-underline"
 										>
 											Log in
 										</Button>
@@ -124,6 +125,17 @@ export const Nav = () => {
 									<SheetClose className="w-full">
 										<Button className="text-lg sm:text-lg  w-full sm:px-10 font-semibold rounded-full ">
 											Sign up
+										</Button>
+									</SheetClose>
+								</Link>
+								<Separator  className="my-2"/>
+								<Link href="/auth/signup">
+									<SheetClose className="w-full">
+										<Button
+											variant={"ghost"}
+											className="text-lg sm:text-lg  w-full font-semibold rounded-full bg-secondary hover:bg-white"
+										>
+											Donate
 										</Button>
 									</SheetClose>
 								</Link>
@@ -145,6 +157,22 @@ export const Nav = () => {
 					{!user ? (
 						// -- Auth --
 						<div className="flex gap-2">
+							<Link
+								href={
+									"https://www.gofundme.com/f/support-calmversation"
+								}
+								target="_window"
+							>
+								<Button
+									variant={"ghost"}
+									className="text-lg sm:text-lg  w-full font-semibold rounded-full bg-white hover:bg-white"
+								>
+									Donate
+								</Button>
+							</Link>
+							<div>
+								<Separator orientation="vertical" />
+							</div>
 							<Link href="/auth/login">
 								<Button
 									variant={"ghost"}

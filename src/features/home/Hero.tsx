@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@radix-ui/react-separator";
 import { Lora, Montserrat } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
@@ -25,7 +26,7 @@ const Hero = () => {
 		>
 			<div className="flex container py-20 items-center">
 				{/* Left */}
-				<div className=" w-full md:w-1/2 sm:py-60">
+				<div className=" w-full md:w-1/2 sm:pb-40 sm:pt-52">
 					<h1 className={`text-7xl font-bold lg:text-8xl`}>
 						Let&apos;s talk about it.
 					</h1>
@@ -59,8 +60,11 @@ const Hero = () => {
 					/>
 				</div>
 			</div>
+			<div className="container px-10 md:hidden">
+				<Separator className="h-1 bg-emerald-200" />
+			</div>
 			{/* App Description */}
-			<div className="bg-amber-100 py-16">
+			<div className="py-20">
 				<div className="container">
 					<h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-6">
 						Empower Your Well-being With Every Conversation
@@ -83,13 +87,48 @@ const Hero = () => {
 						simply share your thoughts, Calmversation offers a safe
 						and private environment to do just that. Engage in
 						meaningful dialogue and discover insights that can help
-						you grow.
+						you grow. Plus, with an account, you can preserve these
+						exchanges securely, with encrypted messaging for your peace of mind.
 					</p>
 					<p
 						className={`text-md md:text-lg text-gray-700 ${lora.className}`}
 					>
 						With Calmversation, every interaction is a step toward a
 						more balanced and fulfilled you.
+					</p>
+				</div>
+			</div>
+			{/* Donation */}
+			<div className="bg-amber-100 py-20">
+				<div className="container">
+					<h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-6">
+						Support Our Mission
+					</h2>
+					<p
+						className={`text-md md:text-lg text-gray-700 mb-4 ${lora.className}`}
+					>
+						Calmversation is fueled by the generosity of individuals
+						like you. If you've found value in our service and wish
+						to ensure it remains available for those in need,
+						consider{" "}
+						<a
+							className="text-primary"
+							href="https://www.gofundme.com/f/support-calmversation"
+						>
+							supporting us with a donation.
+						</a>{" "}
+						Your contribution helps us cover the costs of
+						maintaining and improving this platform.
+					</p>
+					<p
+						className={`text-md md:text-lg text-gray-700 mb-4 ${lora.className}`}
+					>
+						Not in a position to donate? That's perfectly okay.
+						Sharing Calmversation with someone who might benefit is
+						a wonderful way to support our mission. Each
+						conversation started, each moment of reflection, adds to
+						the collective well-being that we are striving to
+						nurture.
 					</p>
 				</div>
 			</div>
