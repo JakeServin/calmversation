@@ -92,7 +92,7 @@ const LogIn = () => {
 			options: {
 				skipBrowserRedirect: true,
 				redirectTo:
-					"https://calmversation-git-auth-jakeservin.vercel.app/auth/login/success",
+					"https://calmversation.vercel.app/auth/login/success",
 			},
 		});
 
