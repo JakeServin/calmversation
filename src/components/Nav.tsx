@@ -89,15 +89,15 @@ export const Nav = () => {
 			<nav className="flex justify-between items-center pt-5 pb-3 container">
 				{/* -- Logo -- */}
 				<div className="">
-						<Link href={"/"}>
-							<Image
-								src="/images/logo.png"
-								alt="logo"
-								width={200}
-								height={50}
-								className="h-full w-auto"
-							/>
-						</Link>
+					<Link href={"/"}>
+						<Image
+							src="/images/logo.png"
+							alt="logo"
+							width={200}
+							height={50}
+							className="h-full w-auto"
+						/>
+					</Link>
 				</div>
 
 				<Sheet>
@@ -114,7 +114,6 @@ export const Nav = () => {
 					</SheetTrigger>
 					<SheetContent className="w-[400px] sm:w-[540px]">
 						<div className="h-full flex flex-col justify-between items-center w-full">
-
 							{!user ? (
 								// -- Auth --
 								<div className="flex flex-col gap-2 mt-5 w-full">
@@ -136,7 +135,7 @@ export const Nav = () => {
 										</SheetClose>
 									</Link>
 									<Separator className="my-2" />
-									<Link href="/auth/signup">
+									<Link href="https://www.gofundme.com/f/support-calmversation" target="_window">
 										<SheetClose className="w-full">
 											<Button
 												variant={"ghost"}
