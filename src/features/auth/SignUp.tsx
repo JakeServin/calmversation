@@ -113,7 +113,7 @@ const SignUp = () => {
 		} else {
 
 			// Redirect to dashboard
-			router.push("/talk?");
+			router.push("/talk?newUser=true");
 
 		}
 	}
@@ -123,8 +123,7 @@ const SignUp = () => {
 			provider: "google",
 			options: {
 				skipBrowserRedirect: true,
-				redirectTo:
-					"https://calmversation-git-auth-jakeservin.vercel.app/auth/login/success",
+				redirectTo: "https://calmversation-git-auth-jakeservin.vercel.app/auth/login/success",
 			},
 		});
 
