@@ -140,31 +140,6 @@ const SignUp = () => {
 		else setGoogleAuthUrl(data?.url)
 	}
 
-	async function handleGoogleSignIn() {
-		const { data, error } = await supabase.auth.signInWithOAuth({
-			provider: "google",
-			options: {
-				skipBrowserRedirect: true,
-				redirectTo:
-					"https://calmversation-git-auth-jakeservin.vercel.app/auth/login/success",
-			},
-		});
-
-		if (error) console.error("Login error", error);
-
-		console.log(data.url)
-
-		// Create an anchor element
-		const anchor = document.createElement("a");
-		anchor.href = data.url ?? ''; // OAuth URL obtained from the response
-		anchor.target = "_blank"; // Open in a new tab
-		anchor.rel = "noopener noreferrer"; // Security measure
-		document.body.appendChild(anchor); // Append to body
-
-		// Simulate a click
-		// anchor.click();
-	}
-
 	return (
 		<div className="flex justify-center">
 			<div className="flex flex-col p-7 border-2 items-center rounded-xl my-10 mx-14 md:mx-40 w-full lg:max-w-[670px]">
@@ -179,9 +154,8 @@ const SignUp = () => {
 
 				{/* OAUTH */}
 				<div className="w-full ">
-					<a href={googleAuthUrl ?? undefined} target="_window">
+					<a href={googleAuthUrl} target="_window">
 						<Button
-							onClick={handleGoogleSignIn}
 							className="bg-blue-500 text-white text-center rounded-full py-2 text-xs flex justify-center items-center gap-2 w-full hover:bg-blue-400"
 						>
 							<div className="bg-white rounded-full p-1">

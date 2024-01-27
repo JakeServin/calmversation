@@ -27,7 +27,10 @@ const LogIn = () => {
 	const router = useRouter();
 	const { toast } = useToast();
 	const [loading, setLoading] = useState(false);
-	const { setUser, messages, setMessages } = useStore();
+	const { setUser } = useStore();
+	const [googleAuthUrl, setGoogleAuthUrl] = useState<string | undefined>(
+		undefined
+	);
 
 	useEffect(() => {
 		const { data: authListener } = supabase.auth.onAuthStateChange(
@@ -37,6 +40,8 @@ const LogIn = () => {
 				}
 			}
 		);
+
+		getGoogleAuthUrl();
 
 		return () => {
 			if (authListener && authListener.subscription)
@@ -81,7 +86,7 @@ const LogIn = () => {
 		router.push("/talk");
 	}
 
-	async function handleGoogleSignIn() {
+	const getGoogleAuthUrl = async () => {
 		const { data, error } = await supabase.auth.signInWithOAuth({
 			provider: "google",
 			options: {
@@ -92,17 +97,8 @@ const LogIn = () => {
 		});
 
 		if (error) console.error("Login error", error);
-
-		// Create an anchor element
-		const anchor = document.createElement("a");
-		anchor.href = data.url ?? ""; // OAuth URL obtained from the response
-		anchor.target = "_blank"; // Open in a new tab
-		anchor.rel = "noopener noreferrer"; // Security measure
-		document.body.appendChild(anchor); // Append to body
-
-		// Simulate a click
-		anchor.click();
-	}
+		else setGoogleAuthUrl(data?.url);
+	};
 
 	return (
 		<div className="flex justify-center">
@@ -195,20 +191,19 @@ const LogIn = () => {
 
 				{/* OAUTH */}
 				<div className="w-full ">
-					<Button
-						onClick={handleGoogleSignIn}
-						className="bg-blue-500 text-white text-center rounded-full py-2 text-xs flex justify-center items-center gap-2 w-full hover:bg-blue-400"
-					>
-						<div className="bg-white rounded-full p-1">
-							<Image
-								src="/images/google.svg"
-								alt="google"
-								width={20}
-								height={20}
-							/>
-						</div>
-						Continue with Google
-					</Button>
+					<a href={googleAuthUrl}>
+						<Button className="bg-blue-500 text-white text-center rounded-full py-2 text-xs flex justify-center items-center gap-2 w-full hover:bg-blue-400">
+							<div className="bg-white rounded-full p-1">
+								<Image
+									src="/images/google.svg"
+									alt="google"
+									width={20}
+									height={20}
+								/>
+							</div>
+							Continue with Google
+						</Button>
+					</a>
 					<div
 						id="g_id_onload"
 						data-client_id="YOUR_GOOGLE_CLIENT_ID"
