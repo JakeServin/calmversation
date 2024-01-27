@@ -30,6 +30,7 @@ const Footer = () => {
 							<a
 								target="_window"
 								href={"https://github.com/JakeServin"}
+                className='text-gray-500'
 							>
 								{" "}
 								@JakeServin{" "}
