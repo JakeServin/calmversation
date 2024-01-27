@@ -87,7 +87,7 @@ const LogIn = () => {
 			options: {
 				skipBrowserRedirect: true,
 				redirectTo:
-					"https://calmversation-git-auth-jakeservin.vercel.app/auth/login/success",
+					"http://192.168.1.142:3000/auth/login/success",
 			},
 		});
 
@@ -107,7 +107,7 @@ const LogIn = () => {
 					<Form {...form}>
 						<form
 							onSubmit={form.handleSubmit(onSubmit)}
-							className="space-y-2 *:text-base"
+							className="space-y-2"
 						>
 							<FormField
 								control={form.control}
