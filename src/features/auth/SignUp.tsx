@@ -123,13 +123,25 @@ const SignUp = () => {
 			provider: "google",
 			options: {
 				skipBrowserRedirect: true,
-				redirectTo: "https://calmversation-git-auth-jakeservin.vercel.app/auth/login/success",
+				redirectTo:
+					"https://calmversation-git-auth-jakeservin.vercel.app/auth/login/success",
 			},
 		});
 
 		if (error) console.error("Login error", error);
 
-		data.url && window.open(data.url, "googleAuth", "width=500,height=500");
+		// Create an anchor element
+		const anchor = document.createElement("a");
+		anchor.href = data.url ?? ""; // OAuth URL obtained from the response
+		anchor.target = "_blank"; // Open in a new tab
+		anchor.rel = "noopener noreferrer"; // Security measure
+		document.body.appendChild(anchor); // Append to body
+
+		// Simulate a click
+		anchor.click();
+
+		// Clean up - remove the anchor from the DOM
+		document.body.removeChild(anchor);
 	}
 
 	return (
@@ -179,7 +191,7 @@ const SignUp = () => {
 					<Form {...form}>
 						<form
 							onSubmit={form.handleSubmit(onSubmit)}
-							className="space-y-2"
+							className="space-y-2 *:text-base"
 						>
 							<FormField
 								control={form.control}

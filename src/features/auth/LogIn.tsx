@@ -107,7 +107,7 @@ const LogIn = () => {
 					<Form {...form}>
 						<form
 							onSubmit={form.handleSubmit(onSubmit)}
-							className="space-y-2"
+							className="space-y-2 *:text-base"
 						>
 							<FormField
 								control={form.control}
