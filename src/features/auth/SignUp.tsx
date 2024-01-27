@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { lora } from "@/common/fonts";
 import {
 	Form,
@@ -43,6 +43,14 @@ const SignUp = () => {
 	const { messages } = useStore();
 	const { toast } = useToast();
 	const [loading, setLoading] = useState(false);
+	const [googleAuthUrl, setGoogleAuthUrl] = useState<string | undefined>(
+		undefined
+	);
+
+	useEffect(() => {
+		getGoogleAuthUrl()
+	}, [])
+
 
 	useEffect(() => {
 		const { data: authListener } = supabase.auth.onAuthStateChange(
@@ -118,6 +126,20 @@ const SignUp = () => {
 		}
 	}
 
+	const getGoogleAuthUrl = async () => {
+		const { data, error } = await supabase.auth.signInWithOAuth({
+			provider: "google",
+			options: {
+				skipBrowserRedirect: true,
+				redirectTo:
+					"https://calmversation-git-auth-jakeservin.vercel.app/auth/login/success",
+			},
+		});
+
+		if (error) console.error("Login error", error);
+		else setGoogleAuthUrl(data?.url)
+	}
+
 	async function handleGoogleSignIn() {
 		const { data, error } = await supabase.auth.signInWithOAuth({
 			provider: "google",
@@ -130,6 +152,8 @@ const SignUp = () => {
 
 		if (error) console.error("Login error", error);
 
+		console.log(data.url)
+
 		// Create an anchor element
 		const anchor = document.createElement("a");
 		anchor.href = data.url ?? ''; // OAuth URL obtained from the response
@@ -138,7 +162,7 @@ const SignUp = () => {
 		document.body.appendChild(anchor); // Append to body
 
 		// Simulate a click
-		anchor.click();
+		// anchor.click();
 	}
 
 	return (
@@ -155,20 +179,22 @@ const SignUp = () => {
 
 				{/* OAUTH */}
 				<div className="w-full ">
-					<Button
-						onClick={handleGoogleSignIn}
-						className="bg-blue-500 text-white text-center rounded-full py-2 text-xs flex justify-center items-center gap-2 w-full hover:bg-blue-400"
-					>
-						<div className="bg-white rounded-full p-1">
-							<Image
-								src="/images/google.svg"
-								alt="google"
-								width={20}
-								height={20}
-							/>
-						</div>
-						Continue with Google
-					</Button>
+					<a href={googleAuthUrl ?? undefined} target="_window">
+						<Button
+							onClick={handleGoogleSignIn}
+							className="bg-blue-500 text-white text-center rounded-full py-2 text-xs flex justify-center items-center gap-2 w-full hover:bg-blue-400"
+						>
+							<div className="bg-white rounded-full p-1">
+								<Image
+									src="/images/google.svg"
+									alt="google"
+									width={20}
+									height={20}
+								/>
+							</div>
+							Continue with Google
+						</Button>
+					</a>
 				</div>
 
 				<div className="flex w-full items-center my-1">
