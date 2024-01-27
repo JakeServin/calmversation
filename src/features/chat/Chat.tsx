@@ -351,6 +351,7 @@ const Chat = ({
 					className="rounded"
 				/>
 				<Button
+					variant={'outline'}
 					className={`${
 						!isExpanded ? "opacity-0" : "opacity-100"
 					} transition-all duration-200 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl px-10 py-8 font-semibold`}

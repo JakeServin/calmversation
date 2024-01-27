@@ -41,7 +41,7 @@ const Hero = () => {
 						<Link href="/talk">
 							<Button
 								variant={"outline"}
-								className="text-xl px-10 py-5 font-semibold border-primary text-primary hover:bg-amber-50 hover:text-primary w-full sm:w-auto"
+								className="text-xl px-10 py-5 font-semibold border-primary text-primary hover:bg-amber-50 hover:bg-opacity-100 hover:text-primary w-full sm:w-auto"
 							>
 								{" "}
 								Chat Now{" "}
@@ -91,13 +91,14 @@ const Hero = () => {
 						className={`text-md md:text-lg text-gray-700 mb-4 ${lora.className}`}
 					>
 						Our AI-powered companion, Aura, is a friendly voice
-						that&apos;s ready to listen to you 24/7. Whether you need to
-						unwind after a long day, navigate complex feelings, or
-						simply share your thoughts, Calmversation offers a safe
-						and private environment to do just that. Engage in
-						meaningful dialogue and discover insights that can help
-						you grow. Plus, with an account, you can preserve these
-						exchanges securely, with encrypted messaging for your peace of mind.
+						that&apos;s ready to listen to you 24/7. Whether you
+						need to unwind after a long day, navigate complex
+						feelings, or simply share your thoughts, Calmversation
+						offers a safe and private environment to do just that.
+						Engage in meaningful dialogue and discover insights that
+						can help you grow. Plus, with an account, you can
+						preserve these exchanges securely, with encrypted
+						messaging for your peace of mind.
 					</p>
 					<p
 						className={`text-md md:text-lg text-gray-700 ${lora.className}`}
@@ -117,8 +118,8 @@ const Hero = () => {
 						className={`text-md md:text-lg text-gray-700 mb-4 ${lora.className}`}
 					>
 						Calmversation is fueled by the generosity of individuals
-						like you. If you&apos;ve found value in our service and wish
-						to ensure it remains available for those in need,
+						like you. If you&apos;ve found value in our service and
+						wish to ensure it remains available for those in need,
 						consider{" "}
 						<a
 							className="text-amber-500 hover:underline"
