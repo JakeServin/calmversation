@@ -88,8 +88,7 @@ export const Nav = () => {
 		!path.includes("success") && (
 			<nav className="flex justify-between items-center pt-5 pb-3 container">
 				{/* -- Logo -- */}
-				<div className="flex gap-5 items-center">
-					<div>
+				<div className="">
 						<Link href={"/"}>
 							<Image
 								src="/images/logo.png"
@@ -99,13 +98,12 @@ export const Nav = () => {
 								className="h-full w-auto"
 							/>
 						</Link>
-					</div>
 				</div>
 
 				<Sheet>
 					<SheetTrigger>
 						{/* Hamburger Icon */}
-						<div className="md:hidden *:*:hover:bg-gray-500">
+						<div className="md:hidden *:*:hover:bg-gray-500 ml-8">
 							<div className="space-y-2">
 								{/* Hamburger Icon Lines */}
 								<span className="block w-8 h-0.5 bg-black"></span>
