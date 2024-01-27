@@ -82,7 +82,7 @@ const Hero = () => {
 						className={`text-md md:text-lg text-gray-700 mb-4 ${lora.className}`}
 					>
 						Our AI-powered companion, Aura, is a friendly voice
-						that’s ready to listen to you 24/7. Whether you need to
+						that&apos;s ready to listen to you 24/7. Whether you need to
 						unwind after a long day, navigate complex feelings, or
 						simply share your thoughts, Calmversation offers a safe
 						and private environment to do just that. Engage in
@@ -108,7 +108,7 @@ const Hero = () => {
 						className={`text-md md:text-lg text-gray-700 mb-4 ${lora.className}`}
 					>
 						Calmversation is fueled by the generosity of individuals
-						like you. If you've found value in our service and wish
+						like you. If you&apos;ve found value in our service and wish
 						to ensure it remains available for those in need,
 						consider{" "}
 						<a
@@ -123,7 +123,7 @@ const Hero = () => {
 					<p
 						className={`text-md md:text-lg text-gray-700 mb-4 ${lora.className}`}
 					>
-						Not in a position to donate? That's perfectly okay.
+						Not in a position to donate? That&apos;s perfectly okay.
 						Sharing Calmversation with someone who might benefit is
 						a wonderful way to support our mission. Each
 						conversation started, each moment of reflection, adds to
