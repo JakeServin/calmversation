@@ -6,10 +6,9 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { Footer } from "react-day-picker";
 
-const lora = Lora({ subsets: ['latin'] })
+const lora = Lora({ subsets: ["latin"] });
 
 const Hero = () => {
-
 	const [fade, setFade] = useState(true);
 
 	useEffect(() => {
@@ -33,23 +32,22 @@ const Hero = () => {
 					<div
 						className={`mt-8 w-3/2 text-lg text-gray-700 ${lora.className}`}
 					>
-						A safe space to express, reflect, and grow. I&apos;m here to
-						listen and support, whenever you need it.
+						A safe space to express, reflect, and grow. I&apos;m
+						here to listen and support, whenever you need it.
 					</div>
 
-
-						<div className="mt-10">
-							<Link href="/talk">
-								<Button
-									variant={"outline"}
-									className="text-xl px-10 py-5 font-semibold border-primary text-primary hover:bg-amber-50 hover:text-primary"
-								>
-									{" "}
-									Chat Now{" "}
-								</Button>
-							</Link>
-						</div>
+					<div className="mt-10">
+						<Link href="/talk">
+							<Button
+								variant={"outline"}
+								className="text-xl px-10 py-5 font-semibold border-primary text-primary hover:bg-amber-50 hover:text-primary"
+							>
+								{" "}
+								Chat Now{" "}
+							</Button>
+						</Link>
 					</div>
+				</div>
 
 				{/* Right */}
 				<div className="w-1/2 min-w-[500px] pl-20 mb-32 hidden md:block">
@@ -60,6 +58,7 @@ const Hero = () => {
 						height={600}
 					/>
 				</div>
+			</div>
 			{/* App Description */}
 			<div className="bg-amber-100 py-16">
 				<div className="container">
@@ -69,20 +68,22 @@ const Hero = () => {
 					<p
 						className={`text-md md:text-lg text-gray-700 mb-4 ${lora.className}`}
 					>
-						In a world that moves fast, finding a moment for yourself
-						can be challenging. Calmversation is here to change that. At
-						the heart of our mission is a simple belief: everyone
-						deserves a space to reflect, speak freely, and be heard.
+						In a world that moves fast, finding a moment for
+						yourself can be challenging. Calmversation is here to
+						change that. At the heart of our mission is a simple
+						belief: everyone deserves a space to reflect, speak
+						freely, and be heard.
 					</p>
 					<p
 						className={`text-md md:text-lg text-gray-700 mb-4 ${lora.className}`}
 					>
-						Our AI-powered companion, Aura, is a friendly voice that’s
-						ready to listen to you 24/7. Whether you need to unwind
-						after a long day, navigate complex feelings, or simply share
-						your thoughts, Calmversation offers a safe and private
-						environment to do just that. Engage in meaningful dialogue
-						and discover insights that can help you grow.
+						Our AI-powered companion, Aura, is a friendly voice
+						that’s ready to listen to you 24/7. Whether you need to
+						unwind after a long day, navigate complex feelings, or
+						simply share your thoughts, Calmversation offers a safe
+						and private environment to do just that. Engage in
+						meaningful dialogue and discover insights that can help
+						you grow.
 					</p>
 					<p
 						className={`text-md md:text-lg text-gray-700 ${lora.className}`}
@@ -91,9 +92,8 @@ const Hero = () => {
 						more balanced and fulfilled you.
 					</p>
 				</div>
-			</section>
-			{/* <Footer /> */}
-		</>
+			</div>
+		</section>
 	);
 };
 
