@@ -4,6 +4,7 @@ import { Lora, Montserrat } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import { Footer } from "react-day-picker";
 
 const lora = Lora({ subsets: ['latin'] })
 
@@ -36,18 +37,19 @@ const Hero = () => {
 						listen and support, whenever you need it.
 					</div>
 
-					<div className="mt-10">
-						<Link href="/talk">
-							<Button
-								variant={"outline"}
-								className="text-xl px-10 py-5 font-semibold border-primary text-primary hover:bg-amber-50 hover:text-primary"
-							>
-								{" "}
-								Chat Now{" "}
-							</Button>
-						</Link>
+
+						<div className="mt-10">
+							<Link href="/talk">
+								<Button
+									variant={"outline"}
+									className="text-xl px-10 py-5 font-semibold border-primary text-primary hover:bg-amber-50 hover:text-primary"
+								>
+									{" "}
+									Chat Now{" "}
+								</Button>
+							</Link>
+						</div>
 					</div>
-				</div>
 
 				{/* Right */}
 				<div className="w-1/2 min-w-[500px] pl-20 mb-32 hidden md:block">
@@ -58,8 +60,6 @@ const Hero = () => {
 						height={600}
 					/>
 				</div>
-			</div>
-
 			{/* App Description */}
 			<div className="bg-amber-100 py-16">
 				<div className="container">
@@ -91,8 +91,9 @@ const Hero = () => {
 						more balanced and fulfilled you.
 					</p>
 				</div>
-			</div>
-		</section>
+			</section>
+			{/* <Footer /> */}
+		</>
 	);
 };
 

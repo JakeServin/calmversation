@@ -4,18 +4,18 @@ import Message from "./Message";
 
 interface Message {
 	name: string;
-	avatarFallback: string;
-	avatarImage?: string;
 	content: string;
-	time: string;
+	sentByAura: boolean;
+	time: Date;
+	id?: string;
 }
 
 type ChatLogProps = {
 	messages: Array<Message>;
+	active: boolean;
 };
 
-const ChatLog = ({ messages }: ChatLogProps) => {
-
+const ChatLog = ({ messages, active }: ChatLogProps) => {
 	const chatLogRef = useRef<HTMLDivElement>(null);
 
 	const scrollToBottom = () => {
@@ -29,23 +29,29 @@ const ChatLog = ({ messages }: ChatLogProps) => {
 		if (chatLogRef.current) {
 			chatLogRef.current.scrollTop = chatLogRef.current.scrollHeight;
 		}
-	}, [messages]); 
+	}, [messages]);
 
 	return (
 		<div
 			id="chat_log"
-			className="container mt-5 min-h-80 sm:min-h-48 max-h-[68vh] sm:max-h-80 overflow-scroll scroll-smooth"
+			className="container px-0 mt-5 min-h-80 sm:min-h-48 max-h-[68vh] sm:max-h-80 overflow-scroll scroll-smooth"
 			ref={chatLogRef}
 		>
 			{messages.map((message, index) => (
 				<Message
+					index={index}
+					id={message.id}
 					onNewLine={scrollToBottom}
 					key={"message" + index}
 					name={message.name}
-					avatarFallback={message.avatarFallback}
-					avatarImage={message.avatarImage}
+					sentByAura={message.sentByAura}
 					content={message.content}
 					time={message.time}
+					triggerType={
+						active &&
+						index === messages.length - 1 &&
+						message.name === "Aura"
+					}
 				/>
 			))}
 		</div>
