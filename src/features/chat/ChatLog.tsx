@@ -1,17 +1,10 @@
 "use client";
 import { useEffect, useRef } from "react";
 import Message from "./Message";
-
-interface Message {
-	name: string;
-	content: string;
-	sentByAura: boolean;
-	time: Date;
-	id?: string;
-}
+import { Message as MessageInterface } from "@/common/interfaces"
 
 type ChatLogProps = {
-	messages: Array<Message>;
+	messages: Array<MessageInterface>;
 	active: boolean;
 };
 
@@ -47,6 +40,7 @@ const ChatLog = ({ messages, active }: ChatLogProps) => {
 					sentByAura={message.sentByAura}
 					content={message.content}
 					time={message.time}
+					error={message?.error}
 					triggerType={
 						active &&
 						index === messages.length - 1 &&

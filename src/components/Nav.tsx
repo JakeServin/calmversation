@@ -17,7 +17,13 @@ import { useStore } from "@/store";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useToast } from "./ui/use-toast";
 import { useEffect } from "react";
-import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetFooter } from "./ui/sheet";
+import {
+	Sheet,
+	SheetContent,
+	SheetTrigger,
+	SheetClose,
+	SheetFooter,
+} from "./ui/sheet";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 
@@ -135,7 +141,10 @@ export const Nav = () => {
 										</SheetClose>
 									</Link>
 									<Separator className="my-2" />
-									<Link href="https://www.gofundme.com/f/support-calmversation" target="_window">
+									<Link
+										href="https://www.gofundme.com/f/support-calmversation"
+										target="_window"
+									>
 										<SheetClose className="w-full">
 											<Button
 												variant={"ghost"}
@@ -168,47 +177,59 @@ export const Nav = () => {
 				</Sheet>
 				{/* Menu Items */}
 				<div className="hidden md:inline-block">
-					{!user ? (
-						// -- Auth --
-						<div className="flex gap-2">
-							<Link
-								href={
-									"https://www.gofundme.com/f/support-calmversation"
-								}
-								target="_window"
-							>
-								<Button
-									variant={"ghost"}
-									className="text-lg sm:text-lg  w-full font-semibold rounded-full bg-white hover:bg-white"
-								>
-									Donate
-								</Button>
-							</Link>
-							<div>
-								<Separator orientation="vertical" />
-							</div>
-							<Link href="/auth/login">
-								<Button
-									variant={"ghost"}
-									className="text-lg sm:text-lg  w-full font-semibold rounded-full bg-white hover:bg-white"
-								>
-									Log in
-								</Button>
-							</Link>
-							<Link href="/auth/signup">
-								<Button className="text-lg sm:text-lg  w-full sm:px-10 font-semibold rounded-full ">
-									Sign up
-								</Button>
-							</Link>
-						</div>
-					) : (
-						<Button
-							className="text-lg sm:text-lg sm:px-10 font-semibold rounded-full "
-							onClick={handleSignOut}
+					<div className="flex gap-2">
+						<Link
+							href={
+								"https://www.gofundme.com/f/support-calmversation"
+							}
+							target="_window"
 						>
-							Sign out
-						</Button>
-					)}
+							<Button
+								variant={"ghost"}
+								className="text-lg sm:text-lg  w-full font-semibold rounded-full bg-white hover:bg-white"
+							>
+								Donate
+							</Button>
+						</Link>
+
+						{user ? (
+							<>
+								{/* <Link href="/account">
+									<Button
+										variant={"ghost"}
+										className="text-lg sm:text-lg  w-full font-semibold rounded-full bg-white hover:bg-white"
+									>
+										Account
+									</Button>
+								</Link> */}
+								<Button
+									className="text-lg sm:text-lg sm:px-10 font-semibold rounded-full "
+									onClick={handleSignOut}
+								>
+									Sign out
+								</Button>
+							</>
+						) : (
+							<>
+								<div>
+									<Separator orientation="vertical" />
+								</div>
+								<Link href="/auth/login">
+									<Button
+										variant={"ghost"}
+										className="text-lg sm:text-lg  w-full font-semibold rounded-full bg-white hover:bg-white"
+									>
+										Log in
+									</Button>
+								</Link>
+								<Link href="/auth/signup">
+									<Button className="text-lg sm:text-lg  w-full sm:px-10 font-semibold rounded-full ">
+										Sign up
+									</Button>
+								</Link>
+							</>
+						)}
+					</div>
 				</div>
 			</nav>
 		)
