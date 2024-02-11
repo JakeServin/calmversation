@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef } from "react";
 import Message from "./Message";
-import { Message as MessageInterface } from "@/common/interfaces"
+import { Message as MessageInterface } from "@/interfaces"
 
 type ChatLogProps = {
 	messages: Array<MessageInterface>;

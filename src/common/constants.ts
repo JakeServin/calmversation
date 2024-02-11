@@ -1,14 +1,18 @@
+import { VoiceOptions } from "@/interfaces";
+
 // NAVIGATION
 export const SOCIALS = [
 	{
 		src: "/images/github.svg",
 		alt: "github",
 		href: "https://github.com/JakeServin",
-	}, {
+	},
+	{
 		src: "/images/linkedin.svg",
 		alt: "linkedin",
 		href: "https://www.linkedin.com/in/jakeservin/",
-	}, {
+	},
+	{
 		src: "/images/globe.svg",
 		alt: "website",
 		href: "https://jakeservin.dev",
@@ -23,7 +27,7 @@ export const CHAT_CONFIG = {
 	frequency_penalty: 0.5,
 	presence_penalty: 0.5,
 };
-	
+
 export const CHAT_PROMPT = `
 		Act as if you're a psychologist named Aura. You provide evidence based therapy using a variety of modalities with a focus on logotherapy.
 		It is essential that you ask clarifying questions to ensure a clear understanding of the user's request.
@@ -46,3 +50,29 @@ export const CHAT_PROMPT = `
 		Write as if you're speaking to someone verbally.
 `;
 
+export const VOICE_OPTIONS: VoiceOptions = {
+	AURA_1: {
+		voice_id: "nova",
+		display_name: "Aura 1",
+	},
+	AURA_2: {
+		voice_id: "echo",
+		display_name: "Aura 2",
+	},
+	AURA_3: {
+		voice_id: "fable",
+		display_name: "Aura 3",
+	},
+	AURA_4: {
+		voice_id: "onyx",
+		display_name: "Aura 4",
+	},
+	AURA_5: {
+		voice_id: "alloy",
+		display_name: "Aura 5",
+	},
+	AURA_6: {
+		voice_id: "shimmer",
+		display_name: "Aura 6",
+	},
+};
