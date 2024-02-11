@@ -450,8 +450,8 @@ const Chat = ({
 					<SelectTrigger className="w-[180px] absolute top-0 left-0 m-4 bg-transparent text-white font-semibold ring-0 focus:ring-0 hover:bg-white/50 border-2">
 						<SelectValue />
 					</SelectTrigger>
-					<SelectContent className="bg-transparent text-white font-semibold *:*:focus:text-white h-20 sm:max-h-32">
-						{Object.entries(VOICE_OPTIONS).map(([key, value]) => (
+					<SelectContent className="bg-transparent text-white font-semibold *:*:focus:text-white h-20 sm:h-36">
+						{Object.entries(VOICE_OPTIONS).map(([key, value]: [string, any]) => (
 							<SelectItem
 								value={key}
 								className="focus:text-white focus:bg-white/50"
