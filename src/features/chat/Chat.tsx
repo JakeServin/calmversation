@@ -422,10 +422,6 @@ const Chat = ({
 		return plaintext;
 	}
 
-	{
-		Object.entries(VOICE_OPTIONS).forEach(([key, value]: [string, any]) => console.log(key,value));
-	}
-
 	return (
 		<div
 			className={`transition-all duration-500 ${
