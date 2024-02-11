@@ -422,6 +422,10 @@ const Chat = ({
 		return plaintext;
 	}
 
+	{
+		Object.entries(VOICE_OPTIONS).forEach(([key, value]: [string, any]) => console.log(key,value));
+	}
+
 	return (
 		<div
 			className={`transition-all duration-500 ${
@@ -453,6 +457,7 @@ const Chat = ({
 					<SelectContent className="bg-transparent text-white font-semibold *:*:focus:text-white h-20 sm:h-36">
 						{Object.entries(VOICE_OPTIONS).map(([key, value]: [string, any]) => (
 							<SelectItem
+								key={key}
 								value={key}
 								className="focus:text-white focus:bg-white/50"
 							>
