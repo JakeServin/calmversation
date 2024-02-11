@@ -1,4 +1,4 @@
-import { VoiceOptions } from "@/interfaces";
+import { VoiceOptions } from '@/interfaces'
 
 // NAVIGATION
 export const SOCIALS = [
@@ -56,23 +56,23 @@ export const VOICE_OPTIONS: VoiceOptions = {
 		display_name: "Aura 1",
 	},
 	AURA_2: {
-		voice_id: "echo",
+		voice_id: "onyx",
 		display_name: "Aura 2",
 	},
 	AURA_3: {
-		voice_id: "fable",
+		voice_id: "shimmer",
 		display_name: "Aura 3",
 	},
 	AURA_4: {
-		voice_id: "onyx",
+		voice_id: "alloy",
 		display_name: "Aura 4",
 	},
 	AURA_5: {
-		voice_id: "alloy",
+		voice_id: "fable",
 		display_name: "Aura 5",
 	},
 	AURA_6: {
-		voice_id: "shimmer",
+		voice_id: "echo",
 		display_name: "Aura 6",
 	},
 };
