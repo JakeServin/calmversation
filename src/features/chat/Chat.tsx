@@ -5,8 +5,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { useStore } from "@/store";
-import { CHAT_PROMPT } from "@/common/constants";
-import moment from "moment";
+import { CHAT_PROMPT, VOICE_OPTIONS } from "@/common/constants";
 import { openSans } from "@/common/fonts";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import {
@@ -19,11 +18,16 @@ import {
 } from "@/components/ui/alert-dialog";
 import {
 	AlertDialogAction,
-	AlertDialogCancel,
 } from "@radix-ui/react-alert-dialog";
-import { set } from "date-fns";
 import { toast } from "@/components/ui/use-toast";
-import { Message } from "@/common/interfaces";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
+import { SpeechCreateParams } from "openai/resources/audio/speech.mjs";
 
 const Chat = ({
 	searchParams,
@@ -31,7 +35,7 @@ const Chat = ({
 	searchParams: { [key: string]: string | string[] | undefined };
 }) => {
 	const [fade, setFade] = useState(true);
-	const { messages, setMessages, user } = useStore();
+	const { messages, setMessages, user, settings, setSettings } = useStore();
 	const [isExpanded, setIsExpanded] = useState(true);
 	const [input, setInput] = useState("");
 	const [responding, setResponding] = useState(false);
@@ -63,6 +67,7 @@ const Chat = ({
 
 	useEffect(() => {
 		if (messages.length > 0) setIsExpanded(false);
+		syncMessages();
 	}, [messages]);
 
 	useEffect(() => {
@@ -125,8 +130,8 @@ const Chat = ({
 	};
 
 	const resend = () => {
-		getResponse(messages)
-	}
+		getResponse(messages);
+	};
 
 	const getResponse = async (messages: any[]) => {
 		try {
@@ -153,14 +158,16 @@ const Chat = ({
 				},
 			]);
 
-			speak(textResponse.choices[0].message.content || "");
+			speak(
+				textResponse.choices[0].message.content || "",
+				settings.voice
+			);
 			setResponding(false);
 			syncMessages();
 		} catch {
 			setResponding(false);
 
 			setMessages((prev) => {
-				console.log(prev);
 				const copy = [...prev];
 				copy[copy.length - 1].error = true;
 
@@ -174,14 +181,17 @@ const Chat = ({
 		}
 	};
 
-	const speak = async (message: string) => {
+	const speak = async (message: string, voice: string) => {
 		if (mute) return;
 		const response = await fetch("/api/openai/speak", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify({ message }),
+			body: JSON.stringify({
+				message,
+				voice: voice,
+			}),
 		});
 		const audioBlob = await response.blob();
 
@@ -222,7 +232,6 @@ const Chat = ({
 
 			const unsycnedMessages = messages.filter((message) => !message.id);
 
-			console.log(user, messages, unsycnedMessages);
 			if (unsycnedMessages.length) {
 				// Sync unsynced messages to database
 				for (let message of unsycnedMessages) {
@@ -360,7 +369,7 @@ const Chat = ({
 		]);
 		setResponding(false);
 
-		speak(textResponse.choices[0].message.content || "");
+		speak(textResponse.choices[0].message.content || "", settings.voice);
 	};
 
 	const toggleMute = () => {
@@ -374,6 +383,18 @@ const Chat = ({
 			}
 			return !prev;
 		});
+	};
+
+	const handleVoiceChange = async (value: SpeechCreateParams["voice"]) => {
+		setSettings((prev) => ({ ...prev, voice: value }));
+
+		speak(
+			messages
+				.slice()
+				.reverse()
+				.find((message) => message.sentByAura).content,
+			value
+		);
 	};
 
 	async function encryptMessage(plaintext: string) {
@@ -407,7 +428,7 @@ const Chat = ({
 				fade ? "opacity-0" : "opacity-100"
 			}`}
 		>
-			{/* Image */}
+			{/* Wavy Image */}
 			<div
 				className={`${
 					isExpanded ? "h-[85vh] sm:h-[92vh]" : "h-[20vh] sm:h-[40vh]"
@@ -420,9 +441,31 @@ const Chat = ({
 					objectFit="cover"
 					className="rounded"
 				/>
+
+				{/* Voice Select */}
+				<Select
+					value={settings.voice}
+					onValueChange={handleVoiceChange}
+				>
+					<SelectTrigger className="w-[180px] absolute top-0 left-0 m-4 bg-transparent text-white font-semibold ring-0 focus:ring-0 hover:bg-white/50 border-2">
+						<SelectValue />
+					</SelectTrigger>
+					<SelectContent className="bg-transparent text-white font-semibold *:*:focus:text-white h-20 sm:max-h-32">
+						{Object.entries(VOICE_OPTIONS).map(([key, value]) => (
+							<SelectItem
+								value={key}
+								className="focus:text-white focus:bg-white/50"
+							>
+								{value.display_name}
+							</SelectItem>
+						))}
+					</SelectContent>
+				</Select>
+
+				{/* Mute Button */}
 				<Button
 					variant={"outline"}
-					className="absolute top-0 right-0 m-4" // Positions the button in the top right corner
+					className="absolute top-0 right-0 m-4"
 					onClick={toggleMute}
 				>
 					{mute ? (
@@ -457,6 +500,8 @@ const Chat = ({
 						</svg>
 					)}
 				</Button>
+
+				{/* Let's Talk Button */}
 				<Button
 					variant={"outline"}
 					className={`${
@@ -492,7 +537,10 @@ const Chat = ({
 							}}
 						/>
 						<div className="container flex justify-end mt-4 pr-0 ">
-							<Button disabled={responding} onClick={error ? resend : handleSend}>
+							<Button
+								disabled={responding}
+								onClick={error ? resend : handleSend}
+							>
 								{error ? (
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
