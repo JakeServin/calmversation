@@ -388,7 +388,7 @@ const Chat = ({
 	const handleVoiceChange = async (value: SpeechCreateParams["voice"]) => {
 		setSettings((prev) => ({ ...prev, voice: value }));
 
-		speak(
+		messages.length && speak(
 			messages
 				.slice()
 				.reverse()
