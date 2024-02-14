@@ -71,7 +71,7 @@ const AuraSettings = () => {
 								<SelectContent>
 									{Object.entries(VOICE_OPTIONS)?.map(
 										([option, value]) => (
-											<SelectItem value={option}>
+											<SelectItem key={option} value={option}>
 												{value.display_name}
 											</SelectItem>
 										)

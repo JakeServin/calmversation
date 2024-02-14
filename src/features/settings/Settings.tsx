@@ -24,7 +24,7 @@ const Settings = ({ params }: SettingsProps) => {
 					Settings
 				</div>
 				{SETTINGS_MENU.map((setting) => (
-					<Link href={`/settings/${setting.slug}`}>
+					<Link key={setting.slug} href={`/settings/${setting.slug}`}>
 						<div
 							key={setting.slug}
 							className={`items-center text-lg font-medium py-1 my-1 hover:bg-primary hover:cursor-pointer px-3 rounded flex ${
