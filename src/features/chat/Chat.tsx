@@ -16,9 +16,7 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import {
-	AlertDialogAction,
-} from "@radix-ui/react-alert-dialog";
+import { AlertDialogAction } from "@radix-ui/react-alert-dialog";
 import { toast } from "@/components/ui/use-toast";
 import {
 	Select,
@@ -35,7 +33,8 @@ const Chat = ({
 	searchParams: { [key: string]: string | string[] | undefined };
 }) => {
 	const [fade, setFade] = useState(true);
-	const { messages, setMessages, user, settings, setSettings } = useStore();
+	const { messages, setMessages, user, settings, setSettings, profile } =
+		useStore();
 	const [isExpanded, setIsExpanded] = useState(true);
 	const [input, setInput] = useState("");
 	const [responding, setResponding] = useState(false);
@@ -60,6 +59,16 @@ const Chat = ({
 			}
 		};
 	}, []);
+
+	useEffect(() => {
+		if (profile) {
+			setMute(profile?.mute ?? false);
+			setSettings((prev) => ({
+				...prev,
+				voice: profile?.voice_preference ?? "AURA_1",
+			}));
+		}
+	}, [profile]);
 
 	useEffect(() => {
 		if (user?.id) syncMessages();
@@ -373,6 +382,14 @@ const Chat = ({
 	};
 
 	const toggleMute = () => {
+		if (user?.id) {
+			supabase
+				.from("profiles")
+				.update({ mute: !mute })
+				.eq("id", user?.id)
+				.then();
+		}
+
 		setMute((prev) => {
 			if (audioRef.current) {
 				if (prev) {
@@ -387,14 +404,22 @@ const Chat = ({
 
 	const handleVoiceChange = async (value: SpeechCreateParams["voice"]) => {
 		setSettings((prev) => ({ ...prev, voice: value }));
+		if (user?.id) {
+			supabase
+				.from("profiles")
+				.update({ voice_preference: value })
+				.eq("id", user?.id)
+				.then();
+		}
 
-		messages.length && speak(
-			messages
-				.slice()
-				.reverse()
-				.find((message) => message.sentByAura).content,
-			value
-		);
+		messages.length &&
+			speak(
+				messages
+					.slice()
+					.reverse()
+					.find((message) => message.sentByAura).content,
+				value
+			);
 	};
 
 	async function encryptMessage(plaintext: string) {
@@ -431,7 +456,9 @@ const Chat = ({
 			{/* Wavy Image */}
 			<div
 				className={`${
-					isExpanded ? "h-[85vh] sm:h-[92vh]" : "h-[20vh] sm:h-[40vh]"
+					isExpanded
+						? "min-h-[calc(100vh-75px)]"
+						: "h-[20vh] sm:h-[40vh]"
 				} transition-all duration-500 relative rounded-lg border-2 container`}
 			>
 				<Image

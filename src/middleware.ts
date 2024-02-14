@@ -12,16 +12,17 @@ export async function middleware(req: NextRequest) {
 	const supabase = createMiddlewareClient<Database>({ req, res });
 
 	// Refresh session if expired - required for Server Components
-  await supabase.auth.getSession();
+	await supabase.auth.getSession();
 
-  const {
-		data,
-  } = await supabase.auth.getUser();
+	const { data } = await supabase.auth.getUser();
 
-  // if user is signed in and the current path is / redirect the user to /account
-  if (data.user && req.nextUrl.pathname.includes("auth")) {
+	// if user is signed in and the current path is / redirect the user to /account
+	if (data.user && req.nextUrl.pathname.includes("auth")) {
 		return NextResponse.redirect(new URL("/", req.url));
-  }
+	}
+	if (!data.user && req.nextUrl.pathname.includes("settings")) {
+		return NextResponse.redirect(new URL("/", req.url));
+	}
 
 	return res;
 }

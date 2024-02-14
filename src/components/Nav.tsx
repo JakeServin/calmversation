@@ -1,35 +1,19 @@
 "use client";
 import Link from "next/link";
 import { Button } from "./ui/button";
-import {
-	AlertDialog,
-	AlertDialogAction,
-	AlertDialogCancel,
-	AlertDialogContent,
-	AlertDialogDescription,
-	AlertDialogFooter,
-	AlertDialogHeader,
-	AlertDialogTitle,
-	AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import { usePathname, useRouter } from "next/navigation";
 import { useStore } from "@/store";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useToast } from "./ui/use-toast";
 import { useEffect } from "react";
-import {
-	Sheet,
-	SheetContent,
-	SheetTrigger,
-	SheetClose,
-	SheetFooter,
-} from "./ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetClose } from "./ui/sheet";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 
 export const Nav = () => {
 	const path = usePathname();
-	const { user, setUser, setMessages } = useStore();
+	const { user, setUser, setMessages, profile, setProfile } = useStore();
+
 	const router = useRouter();
 	const { toast } = useToast();
 	const supabase = createClientComponentClient();
@@ -42,6 +26,7 @@ export const Nav = () => {
 			(event, session) => {
 				if (event === "SIGNED_IN") {
 					session && setUser(session.user);
+					getProfile(session?.user?.id ?? "");
 					toast({
 						className: "bg-green-400 border-0 text-white",
 						title: "Logged in!",
@@ -53,6 +38,7 @@ export const Nav = () => {
 				} else if (event === "SIGNED_OUT") {
 					router.push("/");
 					setUser(null);
+					setProfile(null);
 					setMessages([]);
 					toast({
 						className: "bg-green-400 border-0 text-white",
@@ -69,11 +55,36 @@ export const Nav = () => {
 		};
 	}, []);
 
+	useEffect(() => {
+		if (user) {
+			const channel = supabase
+				.channel("profile channel")
+				.on(
+					"postgres_changes",
+					{
+						event: "*",
+						schema: "public",
+						table: "profiles",
+					},
+					() => {
+						getProfile(user.id);
+					}
+				)
+				.subscribe();
+
+			return () => {
+				channel.unsubscribe();
+				setProfile(null);
+			};
+		}
+	}, [user]);
+
 	const reAuthenticate = async () => {
 		const { data, error } = await supabase.auth.getUser();
 
 		if (data?.user) {
 			setUser(data.user);
+			getProfile(data.user.id);
 		}
 	};
 
@@ -87,6 +98,16 @@ export const Nav = () => {
 				title: "Uh oh! Something went wrong.",
 				description: error.message,
 			});
+		}
+	};
+
+	const getProfile = async (id: string) => {
+		const { data, error } = await supabase
+			.from("profiles")
+			.select()
+			.eq("id", id);
+		if (data) {
+			setProfile(data[0]);
 		}
 	};
 
@@ -141,6 +162,16 @@ export const Nav = () => {
 										</SheetClose>
 									</Link>
 									<Separator className="my-2" />
+									<Link href="/talk">
+										<SheetClose className="w-full">
+											<Button
+												variant={"ghost"}
+												className="text-lg sm:text-lg  w-full font-semibold rounded-full bg-secondary hover:bg-white"
+											>
+												Chat
+											</Button>
+										</SheetClose>
+									</Link>
 									<Link
 										href="https://www.gofundme.com/f/support-calmversation"
 										target="_window"
@@ -156,14 +187,50 @@ export const Nav = () => {
 									</Link>
 								</div>
 							) : (
-								<SheetClose className="w-full mt-5">
-									<Button
-										className="text-lg sm:text-lg sm:px-10 font-semibold rounded-full w-full"
-										onClick={handleSignOut}
+								<div className="flex flex-col gap-2 mt-5 w-full">
+									<Link href="/settings/account">
+										<SheetClose className="w-full">
+											<Button
+												variant={"ghost"}
+												className="text-lg sm:text-lg  w-full font-semibold rounded-full bg-secondary hover:bg-white hover:text-underline"
+											>
+												Account
+											</Button>
+										</SheetClose>
+									</Link>
+									<SheetClose className="w-full">
+										<Button
+											className="text-lg sm:text-lg sm:px-10 font-semibold rounded-full w-full"
+											onClick={handleSignOut}
+										>
+											Sign out
+										</Button>
+									</SheetClose>
+									<Separator className="my-2" />
+									<Link href="/talk">
+										<SheetClose className="w-full">
+											<Button
+												variant={"ghost"}
+												className="text-lg sm:text-lg  w-full font-semibold rounded-full bg-secondary hover:bg-white"
+											>
+												Chat
+											</Button>
+										</SheetClose>
+									</Link>
+									<Link
+										href="https://www.gofundme.com/f/support-calmversation"
+										target="_window"
 									>
-										Sign out
-									</Button>
-								</SheetClose>
+										<SheetClose className="w-full">
+											<Button
+												variant={"ghost"}
+												className="text-lg sm:text-lg  w-full font-semibold rounded-full bg-secondary hover:bg-white"
+											>
+												Donate
+											</Button>
+										</SheetClose>
+									</Link>
+								</div>
 							)}
 							<Image
 								src="/images/logo.png"
@@ -192,16 +259,28 @@ export const Nav = () => {
 							</Button>
 						</Link>
 
+						<Link href={"/talk"}>
+							<Button
+								variant={"ghost"}
+								className="text-lg sm:text-lg  w-full font-semibold rounded-full bg-white hover:bg-white"
+							>
+								Chat
+							</Button>
+						</Link>
+
 						{user ? (
 							<>
-								{/* <Link href="/account">
+								<div>
+									<Separator orientation="vertical" />
+								</div>
+								<Link href="/settings/account">
 									<Button
 										variant={"ghost"}
 										className="text-lg sm:text-lg  w-full font-semibold rounded-full bg-white hover:bg-white"
 									>
 										Account
 									</Button>
-								</Link> */}
+								</Link>
 								<Button
 									className="text-lg sm:text-lg sm:px-10 font-semibold rounded-full "
 									onClick={handleSignOut}

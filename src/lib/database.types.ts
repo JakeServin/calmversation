@@ -6,7 +6,7 @@ export type Json =
 	| { [key: string]: Json | undefined }
 	| Json[];
 
-export interface Database {
+export type Database = {
 	public: {
 		Tables: {
 			messages: {
@@ -14,6 +14,7 @@ export interface Database {
 					content: string | null;
 					createdAt: string;
 					id: string;
+					iv: string | null;
 					sentAt: string | null;
 					sentByAura: boolean | null;
 					threadId: string | null;
@@ -22,6 +23,7 @@ export interface Database {
 					content?: string | null;
 					createdAt?: string;
 					id?: string;
+					iv?: string | null;
 					sentAt?: string | null;
 					sentByAura?: boolean | null;
 					threadId?: string | null;
@@ -30,6 +32,7 @@ export interface Database {
 					content?: string | null;
 					createdAt?: string;
 					id?: string;
+					iv?: string | null;
 					sentAt?: string | null;
 					sentByAura?: boolean | null;
 					threadId?: string | null;
@@ -49,19 +52,25 @@ export interface Database {
 					created_at: string | null;
 					email: string | null;
 					id: string;
+					mute: boolean | null;
 					name: string | null;
+					voice_preference: string | null;
 				};
 				Insert: {
 					created_at?: string | null;
 					email?: string | null;
 					id: string;
+					mute?: boolean | null;
 					name?: string | null;
+					voice_preference?: string | null;
 				};
 				Update: {
 					created_at?: string | null;
 					email?: string | null;
 					id?: string;
+					mute?: boolean | null;
 					name?: string | null;
+					voice_preference?: string | null;
 				};
 				Relationships: [
 					{
@@ -113,7 +122,7 @@ export interface Database {
 			[_ in never]: never;
 		};
 	};
-}
+};
 
 export type Tables<
 	PublicTableNameOrOptions extends
