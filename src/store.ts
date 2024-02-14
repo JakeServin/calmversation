@@ -5,6 +5,7 @@ import { Settings } from "./interfaces";
 interface Store {
 	user?: User | null;
 	setUser: (user: User | null) => void;
+	
 	messages: any[];
 	setMessages: (messages: any[] | ((prevMessages: any[]) => any[])) => void;
 	

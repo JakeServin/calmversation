@@ -76,3 +76,16 @@ export const VOICE_OPTIONS: VoiceOptions = {
 		display_name: "Aura 6",
 	},
 };
+
+export const SETTINGS_MENU = [
+	{
+		title: "Account Settings",
+		slug: "account",
+		icon: "user",
+	},
+	{
+		title: "Aura Settings",
+		slug: "aura",
+		icon: "sparkles",
+	},
+];

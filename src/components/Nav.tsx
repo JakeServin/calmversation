@@ -1,17 +1,6 @@
 "use client";
 import Link from "next/link";
 import { Button } from "./ui/button";
-import {
-	AlertDialog,
-	AlertDialogAction,
-	AlertDialogCancel,
-	AlertDialogContent,
-	AlertDialogDescription,
-	AlertDialogFooter,
-	AlertDialogHeader,
-	AlertDialogTitle,
-	AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import { usePathname, useRouter } from "next/navigation";
 import { useStore } from "@/store";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
@@ -22,7 +11,6 @@ import {
 	SheetContent,
 	SheetTrigger,
 	SheetClose,
-	SheetFooter,
 } from "./ui/sheet";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
@@ -192,16 +180,30 @@ export const Nav = () => {
 							</Button>
 						</Link>
 
+						<Link
+							href={"/talk"}
+						>
+							<Button
+								variant={"ghost"}
+								className="text-lg sm:text-lg  w-full font-semibold rounded-full bg-white hover:bg-white"
+							>
+								Chat
+							</Button>
+						</Link>
+
 						{user ? (
 							<>
-								{/* <Link href="/account">
+								<div>
+									<Separator orientation="vertical" />
+								</div>
+								<Link href="/settings/account">
 									<Button
 										variant={"ghost"}
 										className="text-lg sm:text-lg  w-full font-semibold rounded-full bg-white hover:bg-white"
 									>
 										Account
 									</Button>
-								</Link> */}
+								</Link>
 								<Button
 									className="text-lg sm:text-lg sm:px-10 font-semibold rounded-full "
 									onClick={handleSignOut}
