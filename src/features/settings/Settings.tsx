@@ -1,7 +1,5 @@
 "use client";
 import { SETTINGS_MENU } from "@/common/constants";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import React from "react";
 import AccountSettings from "./AccountSettings";
@@ -19,16 +17,17 @@ const Settings = ({ params }: SettingsProps) => {
 	const { user } = useStore();
 
 	return (
-		<div className="container flex min-h-[calc(100vh-75px)] pt-5">
+		<div className="mx-4 sm:container flex min-h-[calc(100vh-75px)] pt-5">
 			{/* Left */}
-			<div className="w-2/5 lg:w-1/4 flex flex-col mr-5">
-				<div className="text-3xl font-bold">
+			<div className="sm:w-2/5 lg:w-1/4 flex flex-col mr-5">
+				<div className="hidden sm:inline-block text-3xl font-bold">
 					Settings
 				</div>
 				{SETTINGS_MENU.map((setting) => (
 					<Link href={`/settings/${setting.slug}`}>
 						<div
-							className={`text-lg font-medium py-1 my-1 hover:bg-primary hover:cursor-pointer px-3 rounded flex ${
+							key={setting.slug}
+							className={`items-center text-lg font-medium py-1 my-1 hover:bg-primary hover:cursor-pointer px-3 rounded flex ${
 								setting.slug == params.setting && "bg-primary"
 							}`}
 						>
@@ -39,13 +38,15 @@ const Settings = ({ params }: SettingsProps) => {
 								src={`/images/${setting.icon}.svg`}
 							/>
 							&nbsp;
-							{setting.title}
+							<div className="hidden sm:inline-block">
+								{setting.title}
+							</div>
 						</div>
 					</Link>
 				))}
 			</div>
 			{/* Right */}
-			<div className="w-3/5 lg:w-3/4">
+			<div className="w-full sm:w-3/5 lg:w-3/4">
 				{params.setting == "account" ? (
 					<AccountSettings />
 				) : (

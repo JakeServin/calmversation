@@ -1,8 +1,11 @@
 import React from "react";
 
-const EditButton = () => {
+const EditButton = ({ onClick }: { onClick: () => void }) => {
 	return (
-		<div className="absolute right-0 top-0 m-3 border w-fit p-2 rounded-full hover:bg-secondary hover:cursor-pointer">
+		<div
+			onClick={onClick}
+			className="absolute right-0 top-0 m-3 border w-fit p-2 rounded-full hover:bg-secondary hover:cursor-pointer"
+		>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				fill="none"
