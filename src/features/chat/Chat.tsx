@@ -457,7 +457,7 @@ const Chat = ({
 			<div
 				className={`${
 					isExpanded
-						? "min-h-[calc(100vh-75px)]"
+						? "h-[calc(100vh-75px)]"
 						: "h-[20vh] sm:h-[40vh]"
 				} transition-all duration-500 relative rounded-lg border-2 container`}
 			>
