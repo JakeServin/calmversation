@@ -26,8 +26,6 @@ export const useChat = (searchParams: {
 			setConfirmEmailModal(true);
 		}
 
-		syncMessages();
-
 		return () => {
 			if (audioRef.current) {
 				audioRef.current.pause(); // Ensure audio is stopped
@@ -52,7 +50,6 @@ export const useChat = (searchParams: {
 
 	useEffect(() => {
 		if (messages.length > 0) setIsExpanded(false);
-		syncMessages();
 	}, [messages]);
 
 	useEffect(() => {
@@ -80,7 +77,8 @@ export const useChat = (searchParams: {
 				content: input,
 				time: new Date(),
 			},
-		]);
+    ]);
+    syncMessages();
 		setInput("");
 
 		// Format messages for OpenAI
