@@ -19,6 +19,15 @@ export default function RootLayout({
 }) {
   return (
 		<html lang="en">
+			<head>
+				<meta content="Let's talk about it" property="og:title" key="og:title" />
+				<meta
+					content={'A mental health platform that helps you talk through your feelings and emotions.'}
+					property="og:description"
+					key="og:description"
+				/>
+				<meta property="og:image" content={"/images/logo_2.png"} />
+			</head>
 			<body className={montserrat.className}>
 				<Nav />
 				<main>{children}</main>
