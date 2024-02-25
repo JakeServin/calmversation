@@ -49,7 +49,11 @@ export const useChat = (searchParams: {
 	}, [user?.id]);
 
 	useEffect(() => {
-		if (messages.length > 0) setIsExpanded(false);
+		if (messages.length > 0) {
+			setIsExpanded(false);
+
+			syncMessages();
+		}
 	}, [messages]);
 
 	useEffect(() => {
@@ -78,7 +82,6 @@ export const useChat = (searchParams: {
 				time: new Date(),
 			},
     ]);
-    syncMessages();
 		setInput("");
 
 		// Format messages for OpenAI
@@ -174,7 +177,6 @@ export const useChat = (searchParams: {
 				settings.voice
 			);
 			setResponding(false);
-			syncMessages();
 		} catch {
 			setResponding(false);
 
